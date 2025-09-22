@@ -1,0 +1,115 @@
+{% extends "act/base.html" %}
+{% load static %}
+{% block title %}About Us — Email Sender{% endblock %}
+
+{% block content %} 
+<style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      /* Removed background image and using a gradient */
+      background-color: #0f172a;
+      background-image: linear-gradient(to top, #0f172a, #1f2937);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #e5e7eb;
+      display: flex; /* For vertical centering */
+      align-items: center; /* For vertical centering */
+      justify-content: center; /* For horizontal centering */
+    }
+
+    .container {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        width: 100%;
+    }
+
+    .about-wrapper {
+      position: relative; /* For positioning the close button */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(10, 10, 20, 0.85);
+      padding: 50px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+      width: 100%;
+      max-width: 800px;
+      margin: auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center; /* Center all text */
+      transition: box-shadow 0.3s ease-in-out; /* Added transition for hover effect */
+    }
+
+    .about-wrapper:hover {
+      /* Added a blue glow effect on hover */
+      box-shadow: 0 10px 50px -10px rgba(70, 100, 255, 0.4);
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        color: #9ca3af;
+        text-decoration: none;
+        font-size: 2.5rem;
+        font-weight: 300;
+        line-height: 1;
+        transition: color 0.2s;
+    }
+
+    .close-btn:hover {
+        color: #fff;
+    }
+
+    .about-wrapper h1, .about-wrapper h2 {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .about-wrapper h1 {
+        font-size: 3rem; /* Slightly larger title */
+        margin-bottom: 20px;
+    }
+
+    .about-wrapper h2 {
+        font-size: 1.8rem;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #4b5563;
+        padding-bottom: 15px;
+        display: inline-block; /* To make border only as wide as text */
+    }
+
+    .about-wrapper p {
+      color: #d1d5db;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      max-width: 650px;
+      margin: 0 auto 20px auto;
+    }
+
+    .icon {
+        font-size: 3rem;
+        color: #70a1ff;
+        margin-bottom: 20px;
+    }
+
+</style>
+
+<div class="container">
+    <div class="about-wrapper">
+        <a href="{% url 'dash' %}" class="close-btn">&times;</a>
+        
+        <h1>About Our Email Sender</h1>
+        <p>We are dedicated to providing a simple, powerful, and reliable solution for all your emailing needs, seamlessly integrated into the Django framework.</p>
+
+        <section id="mission">
+            <div class="icon">&#128640;</div> <!-- Rocket emoji as a simple icon -->
+            <h2>Our Mission</h2>
+            <p>Our mission is to empower developers and businesses to communicate effectively with their audience. We believe that sending emails should be a straightforward process, not a complex technical hurdle. This tool is designed to be intuitive for users while offering the robust backend functionality that developers demand.</p>
+        </section>
+
+    </div>
+</div>
+
+{% endblock %}

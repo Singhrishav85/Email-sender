@@ -1,0 +1,53 @@
+{% extends "act/base.html" %}
+{% load static %}
+{% block title %}Email Sender — Home{% endblock %}
+
+{% block content %}
+
+    {% comment %} {% if messages %}
+    <div class="container mt-4 one">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %} {% endcomment %}
+    <nav class="navbar">
+        <div class="navbar-brand">Email Sender</div>
+        <div class="navbar-links">
+            <a href="{% url 'documentation' %}">Documentation</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="https://github.com/Singhrishav85">GitHub</a>
+            <a href=" {% url 'login' %}  " class="navbar-login">Login</a>
+        </div>
+    </nav>
+
+
+    <div class="hero-section">
+        <h1>Send Emails with Ease</h1>
+        <p>A powerful and reliable solution for all your email needs.</p>
+        <a href=" {% url 'login' %}  " class="get-started-btn">Get Started</a>
+    </div>
+
+    <div class="stats-section">
+        <div class="stat-item">
+            <h3>{{ total_users }}</h3>
+            <p>Registered Users</p>
+        </div>
+        <div class="stat-item">
+            <h3>99.9%</h3>
+            <p>Uptime</p>
+        </div>
+        <div class="stat-item">
+            <h3>24/7</h3>
+            <p>Support</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2025 Email Sender. All rights reserved.
+    </div>
+
+
+{% endblock %}

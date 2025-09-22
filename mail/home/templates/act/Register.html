@@ -1,0 +1,93 @@
+{% extends "act/base.html" %}
+{% load static %}
+{% block title %}Register{% endblock %}
+
+
+{% block content %}
+<div class="container py-5">
+        <div class="card shadow rounded">
+        <div class="card-body p-4">
+            <h3 class="text-center mb-4">Create Your Account</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" name="first_name" id="first_name" class="form-control"
+                               placeholder="Enter First Name" required value="{{ first_name }}">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" name="last_name" id="last_name" class="form-control"
+                               placeholder="Enter Last Name" required value="{{ last_name }}">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" name="email" id="email" class="form-control"
+                               placeholder="Enter Email" required value="{{ email }}">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="text" name="phone" id="phone" class="form-control"
+                               placeholder="Enter Phone Number" required value="{{ phone }}">
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="organization" class="form-label">Organization Name</label>
+                        <input type="text" name="organization" id="organization" class="form-control"
+                               placeholder="Enter Your Company Name" required value="{{ organization }}">
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" name="date" id="date" class="form-control" placeholder="DD-MM-YY"
+                               value="{{ date_of_birth }} " required>
+                    </div>
+
+                        <br>
+                <div class="col-md-6">
+                        <label for="passwords" class="form-label">Email Host password</label>
+                        <input type="password" name="passwords" id="passwords" class="form-control"
+                               placeholder="Enter Email password">
+                    </div> 
+                    <div class="col-md-6">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" name="password" id="password" class="form-control"
+                               placeholder="Enter password" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                        <input type="password" name="confirm_password" id="confirm_password" class="form-control"
+                               placeholder="Confirm password" required>
+                    </div>
+                </div>
+
+                    
+                <div class="form-check mt-3">
+                    <input type="checkbox" name="terms" id="terms" class="form-check-input" required>
+                    <label for="terms" class="form-check-label">Agree with <a href="#">Terms of Use</a></label>
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Save & Next</button>
+                </div>
+
+            </form>
+
+            <!-- Login Option -->
+            <div class="text-center mt-3">
+                <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- <script src="{% static 'js/register.js' %}"></script> -->
+{% endblock %}

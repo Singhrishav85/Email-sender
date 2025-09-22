@@ -1,0 +1,117 @@
+{% extends "t/base.html" %}
+{% load static %}
+
+{% block title %}Configure Mail Templates{% endblock %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+
+        <a class="navbar-brand fs-3" >📧 Mail Templates</a>
+
+        <h2>Welcome, {{username}}</h2>
+        
+        <div class="d-flex align-items-center">
+            <a href=" {% url 'home' %}" class="btn btn-warning me-2">
+                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+            </a>
+            <a href="{% url 'logout' %}" class="btn btn-danger me-2">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+            <a class="btn btn-light rounded-5 me-2" href="{% url 'profile' %}">
+                <i class="fa-solid fa-user fa-xl" style="color: #050505ff;"></i>
+            </a>
+        </div>
+    </div>
+</nav>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert1 alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="background-color: {{ message.color|default:'' }};">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+<div class="container mt-5">
+
+    <!-- Heading + Create New -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold"></h2>
+        <a href=" {% url 'createtemplate' %} " class="btn btn-primary">➕ Create New Template</a>
+    </div>
+
+
+    <!-- Templates Table -->
+    <div class="table-responsive shadow rounded">
+        <table class="table table-dark table-striped table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th>Template Name</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Created On</th>
+                    <th>Updated On</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>#</td>
+                    <td> {{primary.template_name}} </td>
+                    <td>{{ primary.subject }}</td>
+                <td>
+                    <button class="btn btn-success rounded-pill" disabled>Primary</button>
+                </td>
+                    <td>{{ primary.created_at }}</td>
+                    <td>{{ primary.updated_at }}</td>
+                <td>
+        <a href="{% url 'viewstatus' primary.id %}" class="btn btn-sm btn-info">👁 View</a>
+        <a href="{% url 'editprofile' primary.id %}" class="btn btn-sm btn-warning">✏ Edit</a>
+
+            <button class="btn btn-sm btn-secondary" disabled>Default</button>
+    </td>
+</tr>
+
+
+
+                {% for t in others %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ t.template_name }}</td>
+                    <td>{{ t.subject }}</td>
+                <td>
+                    <button class="btn btn-warning rounded-pill" disabled>Secondary</button>
+                </td>
+                    <td>{{ t.created_at }}</td>
+                    <td>{{ t.updated_at }}</td>
+                <td>
+        <a href="{% url 'viewstatus' t.id %}" class="btn btn-sm btn-info">👁 View</a>
+        <a href="{% url 'editprofile' t.id %}" class="btn btn-sm btn-warning">✏ Edit</a>
+            <a href="{% url 'deletetemplate' t.id %}" class="btn btn-sm btn-danger">🗑 Delete</a>
+    </td>
+</tr>
+
+                    {% endfor %}
+
+               
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>window.addEventListener('DOMContentLoaded', (event) => {
+    setTimeout(() => {
+        let alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.display = 'none';
+            });
+        }, 3000); 
+    });
+</script>
+{% endblock %}

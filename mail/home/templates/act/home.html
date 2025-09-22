@@ -1,0 +1,136 @@
+{% extends "act/base.html" %}
+{% load static %}
+{% block title %} Home{% endblock %}
+
+{% block content %}
+<style>
+    .profile-icon, .help-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.2s;
+    }
+    .profile-icon {
+        background-color: #0d6efd; /* Bootstrap primary color */
+        font-size: 1.2rem;
+    }
+    .profile-icon:hover {
+        background-color: #0b5ed7;
+        color: #fff;
+    }
+    .help-icon {
+        background-color: #6c757d; 
+        font-size: 1.5rem;
+    }
+    .help-icon:hover {
+        background-color: #5c636a;
+        color: #fff;
+    }
+    .help{
+      margin-left: 1rem;
+    }
+</style>
+
+<div class="container-fluid p-3 border-bottom border-secondary d-flex justify-content-between align-items-center">
+  <h1 class="h4 Welcome">Welcome, {{ user.first_name }} {{ user.last_name }}</h1>
+  <!-- Profile Section -->
+  <div class="profile-section d-flex align-items-center">
+      <a href="{% url 'profile' %}" class="profile-icon" title="My Profile">
+          <span>{{ user.first_name|first|upper }}</span>
+      </a>
+      <a href=" {% url "configure" %}" class="btn btn-secondary ms-3">Templates</a>
+
+      <a href="{% url 'logout' %}" class="btn btn-outline-danger ms-3">Logout</a>
+  </div>
+</div>
+<br>
+
+
+
+{% if messages %}
+        {% for message in messages %}
+            <div class="alert alert1 alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="background-color: {{ message.color|default:'' }};">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+<div class="container mt-4">
+  <h2 class="h5 mb-3">Recipients</h2>
+
+  <div class="d-flex mb-3 search-bar">
+    <input type="text" class="form-control me-2 rounded-pill" placeholder="Search by name, Category, Comments, Emails">
+    <button class="btn btn-primary me-2 rounded-pill">
+      <i class="fa fa-search"></i>
+    </button>
+
+  </div>
+
+  <div class="mb-3">
+    <a href="{% url 'addrecepients' %}" class="btn btn-success me-2">
+      <i class="fa fa-user-plus"></i> Add Recipient
+    </a>
+    <button class="btn btn-warning" form="recipientForm">
+      <i class="fa fa-paper-plane"></i> Send to Selected
+    </button>
+    {% comment %} <a href="{% url 'send_bulk_mail' %}" class="btn btn-warning " form="recipientForm"><i class="fa fa-paper-plane"></i> Send to Selected</a> {% endcomment %}
+    <a href="{% url 'help' %}" class="btn btn-danger help" id="sendSelected">
+      <i class="fa fa-question-circle"></i> Help
+    </a>
+  </div>
+
+  <div class="card bg-dark border-secondary">
+    <div class="card-body">
+      <form method="post" id="recipientForm" action="{% url 'send_bulk_mail' %}">
+        {% csrf_token %}
+      <table class="table table-dark table-hover text-white align-middle">
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" id="selectAll">
+            </th>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Category</th>
+            <th>Comments</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in recepient %}
+          <tr>     
+            <td><input type="checkbox" class="row-check" name="selected_ids" value="{{ r.id }}"></td>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ r.name }}</td>
+            <td>{{ r.email_address }}</td>
+            <td>{{ r.category }}</td>
+            <td>{{ r.comment }}</td>
+            <td>
+              <a href="{% url 'view' r.id %}" class="btn btn-primary btn-sm btn-action">
+                <i class="fa fa-eye"></i> View
+              </a>
+              <a href="{% url 'edit' r.id %}" class="btn btn-warning btn-sm btn-action">
+                <i class="fa fa-edit"></i> Edit
+              </a>
+              <a href="{% url 'deleterecepient' r.id %}" class="btn btn-danger btn-sm">
+                <i class="fa fa-trash"></i> Delete
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

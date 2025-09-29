@@ -4,50 +4,136 @@
 
 {% block content %}
 
-    {% comment %} {% if messages %}
-    <div class="container mt-4 one">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
+<nav class="navbar">
+    <div class="navbar-brand">Email Sender</div>
+    <div class="navbar-links">
+        <a href="{% url 'documentation' %}">Documentation</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="https://github.com/Singhrishav85">GitHub</a>
+        <a href="{% url 'login' %}" class="navbar-login">Login</a>
     </div>
-{% endif %} {% endcomment %}
-    <nav class="navbar">
-        <div class="navbar-brand">Email Sender</div>
-        <div class="navbar-links">
-            <a href="{% url 'documentation' %}">Documentation</a>
-            <a href="{% url 'about' %}">About</a>
-            <a href="https://github.com/Singhrishav85">GitHub</a>
-            <a href=" {% url 'login' %}  " class="navbar-login">Login</a>
-        </div>
-    </nav>
-
-
-    <div class="hero-section">
-        <h1>Send Emails with Ease</h1>
-        <p>A powerful and reliable solution for all your email needs.</p>
-        <a href=" {% url 'login' %}  " class="get-started-btn">Get Started</a>
+    <div class="navbar-hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
+</nav>
 
-    <div class="stats-section">
-        <div class="stat-item">
-            <h3>{{ total_users }}</h3>
-            <p>Registered Users</p>
+<div class="hero-section">
+    <h1>Send Emails with Ease</h1>
+    <p>A powerful and reliable solution for all your email needs.</p>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'dash' %}" class="btn btn-warning">Back to Dashboard</a>
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-primary">Get Started</a>
+    {% endif %}
+</div>
+
+<div class="stats-section">
+    <div class="stat-item">
+        <h3>{{ total_users }}</h3>
+        <p>Registered Users</p>
+    </div>
+    <div class="stat-item">
+        <h3>99.9%</h3>
+        <p>Uptime</p>
+    </div>
+    <div class="stat-item">
+        <h3>24/7</h3>
+        <p>Support</p>
+    </div>
+</div>
+
+<div class="features-section">
+    <h2>Key Features</h2>
+    <div class="features-grid">
+        <div class="feature-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0-3.866-3.582-7-8-7S4 7.134 4 11v2h16v-2c0-3.866-3.582-7-8-7z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 13v4a2 2 0 002 2h12a2 2 0 002-2v-4M8 11V9m8 2V9" />
+            </svg>
+            <h3>Easy to Use</h3>
+            <p>Intuitive interface for a seamless experience.</p>
         </div>
-        <div class="stat-item">
-            <h3>99.9%</h3>
-            <p>Uptime</p>
+        <div class="feature-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <h3>Fast Delivery</h3>
+            <p>Emails delivered in seconds.</p>
         </div>
-        <div class="stat-item">
-            <h3>24/7</h3>
-            <p>Support</p>
+        <div class="feature-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.022-.134-2.022-.382-3.016z" />
+            </svg>
+            <h3>Secure</h3>
+            <p>Your data is always safe and protected.</p>
         </div>
     </div>
+</div>
 
-    <div class="footer">
-        &copy; 2025 Email Sender. All rights reserved.
+<div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+        <div class="faq-question">
+            <span>What is Email Sender?</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </div>
+        <div class="faq-answer">
+            <p>Email Sender is a powerful and reliable solution for all your email needs, providing fast, secure, and easy-to-use email services.</p>
+        </div>
     </div>
+    <div class="faq-item">
+        <div class="faq-question">
+            <span>Is it free to use?</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </div>
+        <div class="faq-answer">
+            <p>Yes, Email Sender offers a free plan with generous limits, as well as premium plans for advanced users with higher volume needs.</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">
+            <span>How do I get started?</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </div>
+        <div class="faq-answer">
+            <p>Simply click the "Get Started" button, create an account, and you can start sending emails in minutes. Check out our documentation for more details.</p>
+        </div>
+    </div>
+</div>
 
+<div class="footer">
+    &copy; 2025 Email Sender. All rights reserved.
+</div>
+
+<script>
+    const hamburger = document.querySelector('.navbar-hamburger');
+    const navLinks = document.querySelector('.navbar-links');
+
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+
+    const faqQuestions = document.querySelectorAll('.faq-question');
+
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            const answer = question.nextElementSibling;
+            const icon = question.querySelector('svg');
+
+            answer.classList.toggle('active');
+            icon.classList.toggle('rotate');
+        });
+    });
+</script>
 
 {% endblock %}

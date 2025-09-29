@@ -1,18 +1,13 @@
+import uuid
 from django.shortcuts import render, redirect, get_object_or_404
 from .utils import send_bulk_mail
 from django.contrib import messages
 from .models import User, recepients , help
 from template.models import emailtemplates
-
-
-# Create your views here.
-# def send_email(request):
-    # send_email_to_client()
-    # return redirect('/')
-
-# def home(request):
-    # return render(request, 'act/index.html')
-
+from django.core import mail
+from django.conf import settings
+from django.shortcuts import render, redirect
+# from django.contrib.auth.models import User
 def login(request):
     # if 'user_id' in request.session:
     #     del request.session['user_id']
@@ -25,7 +20,6 @@ def login(request):
             user = User.objects.get(email=username)
         except Exception as e:
             messages.error(request, "Invalid creadential")
-            # print(e)
             return redirect('login')
         if user.password == password:
             messages.success(request,"Login Successfully! !")
@@ -74,7 +68,7 @@ def register(request):
 
 def dash(request):
     total_users = User.objects.count() 
-    return render(request, 'act/dash.html',{'total_users': total_users})
+    return render(request, 'act/dash.html',{'total_users': total_users} )
 
 def home(request):
     user_id=request.session.get('user_id')
@@ -88,6 +82,7 @@ def home(request):
     return render(request,'act/home.html',{'user':user,'recepient':recepient})
 
 def logout(request):
+    request.session.flush() 
     messages.success(request,"Logout successfully!")
     return redirect('login')
 
@@ -224,3 +219,122 @@ def send_mail(request):
             messages.error(request, "Failed to send emails. Please check your email settings.")
         return redirect('home')
     return redirect('home')
+
+def change_password(request):
+    user_id=request.session.get('user_id')
+    if not user_id:
+        messages.warning(request,'Login first')
+        return redirect('login')
+    user=User.objects.get(id=user_id)
+    if user_id:
+        if request.method=="POST":
+            current_password=request.POST.get('current_password')
+            new_password=request.POST.get('new_password')
+            confirm_poassword=request.POST.get('confirm_password')
+            if current_password !=user.password:
+                messages.error(request,'current password is incorrect')
+                return redirect('change_password')
+
+            if new_password != confirm_poassword:
+                messages.error(request,'new password and confirm password does not match')
+                return redirect('change_password')
+            user.password=new_password
+            user.save()
+            messages.success(request,'password changed successfully')
+            return redirect('profile')
+    return render(request, 'act/change_password.html')
+
+def edit_profile(request):
+    user_id=request.session.get('user_id')
+    if not user_id:
+        messages.warning(request,'Login first')
+        return redirect('login')
+    user=User.objects.get(id=user_id)
+    if request.method=="POST":
+        first_name=request.POST.get('first_name')
+        last_name=request.POST.get('last_name')
+        email=request.POST.get('email')
+        phone=request.POST.get('phone')
+        organisation=request.POST.get('organization')
+        # date_of_birth=request.POST.get('date_of_birth')
+        email_pass=request.POST.get('email_pass')
+        profile_image=request.FILES.get('profile_image')
+
+        user.first_name=first_name
+        user.last_name=last_name
+        user.email=email
+        user.phone=phone
+        user.organization=organisation
+        # user.date_of_birth=date_of_birth
+        user.email_pass=email_pass
+        if profile_image:
+            user.profile_image=profile_image
+        user.save()
+        messages.success(request,'Profile updated successfully!')
+        return redirect('profile')
+    return render(request, 'act/edit_profile.html',{'user':user})
+
+def forgot_password(request):
+    if request.method == "POST":
+        entered_email = request.POST.get('email')
+        if not entered_email:
+            messages.error(request, "Please enter your email address.")
+            return redirect('forgot_password')
+
+        try:
+            user = User.objects.get(email=entered_email)
+
+            token = str(uuid.uuid4())
+            user.reset_token = token
+            user.save()
+
+            reset_link = request.build_absolute_uri(f'/reset/{token}/')
+
+            from_email = getattr(settings, "DEFAULT_FROM_EMAIL", None) or "youremail@gmail.com"
+
+            try:
+                mail.send_mail(
+                    'Password Reset Request',
+                    f'Click the link to reset your password: {reset_link}',
+                    from_email,
+                    [entered_email],
+                    fail_silently=False,
+                )
+            except Exception as e:
+                print("Error sending reset email:", e)
+                messages.error(request, "Could not send reset email. Check mail settings.")
+                return redirect('forgot_password')
+
+            messages.success(request, "✅ Reset link has been sent to your email!")
+            return redirect('forgot_password')
+
+        except User.DoesNotExist:
+            messages.error(request, "❌ Email does not exist!")
+            return redirect('forgot_password')
+
+    return render(request, 'act/forgot_password.html')
+
+def reset_password(request, token):
+    try:
+        user = User.objects.get(reset_token=token)
+    except User.DoesNotExist:
+        messages.error(request, "Invalid or expired link!")
+        return redirect('login')
+
+    if request.method == "POST":
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match!")
+            return redirect(f'/reset/{token}/')
+
+        # Use Django's password hasher
+        user.set_password(password)
+        user.reset_token = ''
+        user.save()
+
+        messages.success(request, "✅ Password successfully reset!")
+        return redirect('login')
+
+    return render(request, 'act/reset_password.html')

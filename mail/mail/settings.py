@@ -47,18 +47,19 @@ ROOT_URLCONF = 'mail.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
+                'django.contrib.auth.context_processors.auth',  # <-- Important
                 'django.contrib.messages.context_processors.messages',
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'mail.wsgi.application'
 
@@ -120,3 +121,15 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# mail/settings.py
+'django.contrib.sessions.middleware.SessionMiddleware',
+
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'           
+EMAIL_USE_TLS = True                     
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'rishavsingh9725@gmail.com'
+EMAIL_HOST_PASSWORD = 'djxl cdka etba ofbi'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

@@ -3,51 +3,220 @@
 {% load static %}
 
 {% block content %}
-<!-- Full height container + flex for vertical & horizontal centering -->
-<div class="d-flex justify-content-center align-items-center vh-100" style="background-color: #f0f2f5;">
-    <div class="card shadow-sm p-4" style="width: 400px; border-radius: 12px;">
-        <h3 class="card-title mb-4 text-center">Login</h3>
+<style>
+  :root{
+    --bg-gradient: linear-gradient(180deg, rgba(10,20,30,0.65), rgba(5,10,15,0.65));
+    --card-bg: rgba(17,24,39,0.92);
+    --accent: #4ccead;
+    --muted: #b3b3b3;
+  }
 
-        {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
-        {% endif %}
+  body{
+    margin:0;
+    padding:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: var(--bg-gradient), url('https://picsum.photos/1600/900?blur=12') no-repeat center/cover;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
 
-        <form method="post">
-            {% csrf_token %}
+  .form-wrapper{
+    width:100%;
+    max-width:480px;
+    padding:22px;
+    border-radius:12px;
+    background: var(--card-bg);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.04);
+    color: #fff;
+  }
 
-                 {% if messages %}
-                    <div class="container mt-4">
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %} 
+  h3{
+    margin:0 0 14px 0;
+    font-weight:700;
+    text-align:center;
+    color:#f8fafc;
+  }
 
+  .form-label {
+    display:block;
+    font-weight:700;
+    margin-bottom:6px;
+    color:#e6eef0;
+    font-size:0.95rem;
+  }
+  .form-label.required::after{
+    content: " *";
+    color:#ff6b6b;
+    margin-left:4px;
+    font-weight:800;
+  }
 
-            <div class="mb-3">
-                <label for="username" class="form-label">Email</label>
-                <input type="text" name="username" id="username" class="form-control" placeholder="Enter email" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
+  .form-control{
+    width:100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: #e7eef0;
+    padding:10px 12px;
+    border-radius:8px;
+    transition: box-shadow 150ms ease, border-color 150ms ease;
+    outline:none;
+    box-sizing:border-box;
+  }
+  .form-control::placeholder{ color: rgba(255,255,255,0.36); }
+  .form-control:focus{
+    box-shadow: 0 6px 18px rgba(76,206,173,0.06);
+    border-color: var(--accent);
+  }
 
-        <div class="mt-3 text-center">
-            <small class="text-muted">Forgot password? Contact admin</small>
+  .input-group { position:relative; display:flex; align-items:center; }
+  .toggle-pass {
+    position:absolute;
+    right:8px;
+    top:50%;
+    transform:translateY(-50%);
+    background:transparent;
+    border:0;
+    color:var(--muted);
+    font-weight:700;
+    cursor:pointer;
+    padding:6px 8px;
+    border-radius:6px;
+  }
+  .toggle-pass:focus{ outline:none; }
+
+  .btn-custom{
+    width:100%;
+    padding:11px 12px;
+    border-radius:10px;
+    font-weight:800;
+    border:0;
+    cursor:pointer;
+    background: linear-gradient(90deg,var(--accent), #3aa88e);
+    color:#09202a;
+    margin-top:10px;
+  }
+
+  .helper-row {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:10px;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .helper-row a{
+    color:var(--muted);
+    font-size:0.9rem;
+    text-decoration:none;
+  }
+  .register-note{
+    margin-top:12px;
+    text-align:center;
+    color:var(--muted);
+    font-size:0.9rem;
+  }
+
+  /* Small screen adjustments */
+  @media (max-width:420px){
+    .form-wrapper{ padding:18px; border-radius:10px; }
+    .toggle-pass{ right:6px; font-size:0.92rem; }
+  }
+</style>
+
+<div class="form-wrapper">
+  <h3>Login</h3>
+
+  {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
+
+  {% if messages %}
+    <div class="mb-2">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
         </div>
-
-        <!-- Register option added below -->
-        <div class="mt-3 text-center">
-            <small>Don't have an account? <a href="{% url 'Register' %}">Register here</a></small>
-        </div>
+      {% endfor %}
     </div>
+  {% endif %}
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+
+    <div style="margin-bottom:12px;">
+      <label for="username" class="form-label required">Email</label>
+      <input
+        type="email"
+        name="username"
+        id="username"
+        class="form-control"
+        placeholder="you@example.com"
+        required
+        aria-required="true"
+        autocomplete="email"
+      >
+    </div>
+
+    <div style="margin-bottom:6px;">
+      <label for="password" class="form-label required">Password</label>
+      <div class="input-group" style="margin-bottom:6px;">
+        <input
+          type="password"
+          name="password"
+          id="password"
+          class="form-control"
+          placeholder="Enter your password"
+          required
+          aria-required="true"
+          autocomplete="current-password"
+          style="padding-right:72px;"  /* space for button */
+        >
+        {% comment %} <button type="button" class="toggle-pass" id="togglePass" aria-label="Show password">Show</button> {% endcomment %}
+      </div>
+    </div>
+
+    <button type="submit" class="btn-custom">Login</button>
+    <button type="button" class="btn-custom" style="background: linear-gradient(90deg, #ff6b6b, #ff3b3b); margin-top:8px;">
+      <a href="{% url "dash" %}" style="text-decoration: none; color: inherit;">
+        Back to Dashboard
+      </a>
+    </button>
+    <div class="helper-row">
+      <a href=" {% url "forgot_password" %} " class="small">Forgot password?</a>
+      <div style="color:var(--muted); font-size:0.9rem;">Don't have an account?</div>
+    </div>
+
+    <div class="register-note">
+      <a href="{% url 'Register' %}" style="color:var(--accent); font-weight:700; text-decoration:none;">Create an account</a>
+    </div>
+  </form>
 </div>
 
-{% comment %} <script src="{% static 'js/register.js' %}"></script> {% endcomment %}
+{% comment %} <script>
+  // Working password toggle + autofocus
+  (function(){
+    const pass = document.getElementById('password');
+    const toggle = document.getElementById('togglePass');
+    const user = document.getElementById('username');
 
+    if(user) user.focus();
+
+    if(!pass || !toggle) return;
+    toggle.addEventListener('click', function(e){
+      e.preventDefault();
+      if(pass.type === 'password'){
+        pass.type = 'text';
+        toggle.textContent = 'Hide';
+        toggle.setAttribute('aria-pressed', 'true');
+      } else {
+        pass.type = 'password';
+        toggle.textContent = 'Show';
+        toggle.setAttribute('aria-pressed', 'false');
+      }
+    });
+  })();
+</script> {% endcomment %}
 {% endblock %}

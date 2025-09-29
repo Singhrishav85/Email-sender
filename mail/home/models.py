@@ -12,7 +12,8 @@ class User(models.Model):
     email_host=models.CharField(max_length=50,default="smtp.gmail.com")
     email_port=models.IntegerField(default=587)
     use_tls=models.BooleanField(default=True)
-
+    profile_image = models.ImageField(upload_to="profile_images/",null=True,blank=True,default=None)
+    reset_token = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.first_name

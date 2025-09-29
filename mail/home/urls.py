@@ -4,6 +4,8 @@
 # from django.template.loader import render_to_string
 from . import views
 from django.urls import path,include
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -23,4 +25,13 @@ urlpatterns = [
     path('view/<int:id>/', views.view, name='view'),
     path('edit/<int:id>/', views.edit, name='edit'),
     path('templates/',include('template.urls')),
+    path('change_password/', views.change_password, name='change_password'),
+    path('edit_profile/', views.edit_profile, name='edit_profile'),
+    path('forgot_password/', views.forgot_password, name='forgot_password'),
+    path('reset/<str:token>/', views.reset_password, name='reset_password')
+
+
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

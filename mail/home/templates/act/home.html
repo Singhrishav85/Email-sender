@@ -3,6 +3,7 @@
 {% block title %} Home{% endblock %}
 
 {% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <style>
     .profile-icon, .help-icon {
         display: flex;
@@ -35,105 +36,191 @@
     .help{
       margin-left: 1rem;
     }
+    .profile-progress small {
+        display: block;
+        margin-bottom: 2px;
+    }
+    .progress {
+        background-color: #343a40;
+    }
+    .progress-bar {
+        transition: width 0.6s ease;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .profile-section {
+            width: 100%;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        .profile-progress {
+            margin-right: 0 !important;
+        }
+        .search-bar {
+            flex-direction: column;
+        }
+        .search-bar .form-control {
+            margin-right: 0 !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+        .btn-action {
+            margin-bottom: 0.5rem;
+        }
+        .help {
+            margin-left: 0 !important;
+            margin-top: 0.5rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .Welcome {
+            font-size: 1.2rem;
+        }
+        .profile-section a, .profile-section button {
+            margin-left: 0.5rem !important;
+        }
+        .table-responsive {
+            font-size: 0.9rem;
+        }
+    }
 </style>
 
-<div class="container-fluid p-3 border-bottom border-secondary d-flex justify-content-between align-items-center">
-  <h1 class="h4 Welcome">Welcome, {{ user.first_name }} {{ user.last_name }}</h1>
+<div class="container-fluid p-3 border-bottom border-secondary d-flex flex-column flex-md-row justify-content-between align-items-center">
+  <h1 class="h4 Welcome mb-3 mb-md-0">Welcome, {{ user.first_name }} {{ user.last_name }}</h1>
+
   <!-- Profile Section -->
-  <div class="profile-section d-flex align-items-center">
-      <a href="{% url 'profile' %}" class="profile-icon" title="My Profile">
+  <div class="profile-section d-flex flex-wrap align-items-center justify-content-center">
+
+      <!-- 🟢 Profile Completion Section -->
+      <div class="profile-progress me-5 text-center">
+          <small class="text-white fw-bold">Profile Completion</small>
+          <div class="progress" style="width:100px; height:8px; border-radius:10px; overflow:hidden;">
+              <div class="progress-bar bg-success" role="progressbar" 
+                   style="width: {{ profile_completion|default:'70' }}%;" 
+                   aria-valuenow="{{ profile_completion|default:'70' }}" 
+                   aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <small class="text-success fw-semibold">{{ profile_completion|default:'70' }}%</small>
+      </div>
+
+      <!-- Profile Icon -->
+      <a href="{% url 'profile' %}" class="profile-icon mb-2 mb-md-0" title="My Profile">
           <span>{{ user.first_name|first|upper }}</span>
       </a>
-      <a href=" {% url "configure" %}" class="btn btn-secondary ms-3">Templates</a>
 
-      <a href="{% url 'logout' %}" class="btn btn-outline-danger ms-3">Logout</a>
-
-      {% comment %} <a href="{% url 'dash/' %}" class="btn btn-outline-danger ms-3">dash</a> {% endcomment %}
-
+      <a href="{% url 'configure' %}" class="btn btn-secondary ms-0 ms-md-3 mb-2 mb-md-0">Templates</a>
+      <a href="{% url 'logout' %}" class="btn btn-outline-danger ms-0 ms-md-3 mb-2 mb-md-0">Logout</a>
   </div>
 </div>
 <br>
 
-
-
 {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert1 alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="background-color: {{ message.color|default:'' }};">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
-    {% endif %}
+    {% for message in messages %}
+        <div class="alert alert1 alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="background-color: {{ message.color|default:'' }};">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
 <div class="container mt-4">
   <h2 class="h5 mb-3">Recipients</h2>
 
-  <div class="d-flex mb-3 search-bar">
-    <input type="text" class="form-control me-2 rounded-pill" placeholder="Search by name, Category, Comments, Emails">
-    <button class="btn btn-primary me-2 rounded-pill">
+  <div class="d-flex flex-column flex-md-row mb-3 search-bar">
+    <input type="text" class="form-control me-0 me-md-2 mb-2 mb-md-0 rounded-pill" placeholder="Search by name, Category, Comments, Emails">
+    <button class="btn btn-primary rounded-pill">
       <i class="fa fa-search"></i>
     </button>
-
   </div>
 
-  <div class="mb-3">
-    <a href="{% url 'addrecepients' %}" class="btn btn-success me-2">
+  <div class="mb-3 d-flex flex-wrap">
+    <a href="{% url 'addrecepients' %}" class="btn btn-success me-2 mb-2">
       <i class="fa fa-user-plus"></i> Add Recipient
     </a>
-    <button class="btn btn-warning" form="recipientForm">
+    <button class="btn btn-warning mb-2" form="recipientForm">
       <i class="fa fa-paper-plane"></i> Send to Selected
     </button>
-    {% comment %} <a href="{% url 'send_bulk_mail' %}" class="btn btn-warning " form="recipientForm"><i class="fa fa-paper-plane"></i> Send to Selected</a> {% endcomment %}
-    <a href="{% url 'help' %}" class="btn btn-danger help" id="sendSelected">
+    <a href="{% url 'help' %}" class="btn btn-danger help ms-0 ms-md-2 mb-2" id="sendSelected">
       <i class="fa fa-question-circle"></i> Help
     </a>
   </div>
 
   <div class="card bg-dark border-secondary">
     <div class="card-body">
-      <form method="post" id="recipientForm" action="{% url 'send_bulk_mail' %}">
-        {% csrf_token %}
-      <table class="table table-dark table-hover text-white align-middle">
-        <thead>
-          <tr>
-            <th>
-              <input type="checkbox" id="selectAll">
-            </th>
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Category</th>
-            <th>Comments</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for r in recepient %}
-          <tr>     
-            <td><input type="checkbox" class="row-check" name="selected_ids" value="{{ r.id }}"></td>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ r.name }}</td>
-            <td>{{ r.email_address }}</td>
-            <td>{{ r.category }}</td>
-            <td>{{ r.comment }}</td>
-            <td>
-              <a href="{% url 'view' r.id %}" class="btn btn-primary btn-sm btn-action">
-                <i class="fa fa-eye"></i> View
-              </a>
-              <a href="{% url 'edit' r.id %}" class="btn btn-warning btn-sm btn-action">
-                <i class="fa fa-edit"></i> Edit
-              </a>
-              <a href="{% url 'deleterecepient' r.id %}" class="btn btn-danger btn-sm">
-                <i class="fa fa-trash"></i> Delete
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </form>
+      <div class="table-responsive">
+        <form method="post" id="recipientForm" action="{% url 'send_bulk_mail' %}" class="w-100">
+          {% csrf_token %}
+          <table class="table table-dark table-hover text-white align-middle">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="selectAll"></th>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Category</th>
+                <th>Comments</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in recepient %}
+              <tr>     
+                <td><input type="checkbox" class="row-check" name="selected_ids" value="{{ r.id }}"></td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ r.name }}</td>
+                <td>{{ r.email_address }}</td>
+                <td>{{ r.category }}</td>
+                <td>{{ r.comment }}</td>
+                <td class="d-flex flex-wrap">
+                  <a href="{% url 'view' r.id %}" class="btn btn-primary btn-sm btn-action mb-1 me-1">
+                    <i class="fa fa-eye"></i> View
+                  </a>
+                  <a href="{% url 'edit' r.id %}" class="btn btn-warning btn-sm btn-action mb-1 me-1">
+                    <i class="fa fa-edit"></i> Edit
+                  </a>
+                  <a href="{% url 'deleterecepient' r.id %}" class="btn btn-danger btn-sm mb-1">
+                    <i class="fa fa-trash"></i> Delete
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </form>
+      </div>
     </div>
   </div>
 </div>
 
-
+<div class="features-section">
+    <h2>Key Features</h2>
+    <div class="features-grid">
+        <div class="feature-item  bg-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0-3.866-3.582-7-8-7S4 7.134 4 11v2h16v-2c0-3.866-3.582-7-8-7z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 13v4a2 2 0 002 2h12a2 2 0 002-2v-4M8 11V9m8 2V9" />
+            </svg>
+            <h3 style="color:white;">Easy to Use</h3>
+            <p style="color:white;">Intuitive interface for a seamless experience.</p>
+        </div>
+        <div class="feature-item  bg-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <h3 style="color:white;">Fast Delivery</h3>
+            <p style="color:white;">Emails delivered in seconds.</p>
+        </div>
+        <div class="feature-item  bg-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.022-.134-2.022-.382-3.016z" />
+            </svg>
+            <h3 style="color:white;">Secure</h3>
+            <p style="color:white;">Your data is always safe and protected.</p>
+        </div>
+    </div>
+</div>
 {% endblock %}

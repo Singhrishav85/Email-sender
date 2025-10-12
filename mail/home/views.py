@@ -71,15 +71,39 @@ def dash(request):
     return render(request, 'act/dash.html',{'total_users': total_users} )
 
 def home(request):
-    user_id=request.session.get('user_id')
+    user_id = request.session.get('user_id')
     if not user_id:
-        messages.warning(request,"login first")
+        messages.warning(request, "Please login first")
         return redirect('login')
 
-    user=User.objects.get(id=user_id)
-    recepient=recepients.objects.filter(sender=user)
-        
-    return render(request,'act/home.html',{'user':user,'recepient':recepient})
+    user = User.objects.get(id=user_id)
+    recepient = recepients.objects.filter(sender=user)
+
+    # 🧮 Profile Completion Logic
+    total_fields = 5  # jitne fields count karne hain (adjust according to your User model)
+    filled = 0
+
+    if user.first_name:
+        filled += 1
+    if user.last_name:
+        filled += 1
+    if user.email:
+        filled += 1
+    if hasattr(user, 'phone') and user.phone:
+        filled += 1
+    if hasattr(user, 'organization') and user.organization:
+        filled += 1
+
+    profile_completion = int((filled / total_fields) * 100)
+
+    context = {
+        'user': user,
+        'recepient': recepient,
+        'profile_completion': profile_completion
+    }
+
+    return render(request, 'act/home.html', context)
+
 
 def logout(request):
     request.session.flush() 
@@ -91,13 +115,33 @@ def profile(request):
     if not user_id:
         messages.warning(request, "Please login to view your profile.")
         return redirect('login')
+    
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
         messages.error(request, "User not found.")
         return redirect('login')
+    
+    # 🟢 Profile Completion Logic
+    total_fields = 5  # jitne fields count karne hain (adjust according to your User model)
+    filled = 0
 
-    return render(request, 'act/profile.html', {'user': user})
+    if user.first_name:
+        filled += 1
+    if user.last_name:
+        filled += 1
+    if user.email:
+        filled += 1
+    if hasattr(user, 'phone') and user.phone:
+        filled += 1
+    if hasattr(user, 'organization') and user.organization:
+        filled += 1
+
+    profile_completion = int((filled / total_fields) * 100)
+
+    # 🟢 Pass profile_completion to template
+    return render(request, 'act/profile.html', {'user': user,'profile_completion': profile_completion})
+
 
 def deleterecepient(request, id):
     user_id=request.session.get('user_id')

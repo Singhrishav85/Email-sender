@@ -1,0 +1,81 @@
+{% extends "t/base.html" %}
+{% load static %}
+
+{% block title %}Configure Mail Templates{% endblock %}
+
+{% block content %}
+
+<body class="bg-dark text-light">
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg bg-secondary text-light">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="mb-0"><i class="fa-solid fa-user-pen"></i> Edit Profile</h4>
+          <a href="/templates/" class="btn btn-outline-light btn-sm">
+            <i class="fa-solid fa-arrow-left"></i> Back
+          </a>
+        </div>
+        <form method="post">
+          {% csrf_token %}
+        <div class="card-body">
+
+          <!-- Template Name -->
+          <div class="mb-3">
+            <label class="form-label text-warning">Template Name</label>
+            <input name="template_name" type="text" class="form-control" placeholder="Enter template name" value="{{ emailtemplate.template_name }}">
+          </div>
+
+          <!-- Subject -->
+          <div class="mb-3">
+            <label class="form-label text-warning">Subject</label>
+            <input name="subject" type="text" class="form-control" placeholder="Enter subject" value="{{ emailtemplate.subject }}">
+          </div>
+
+          <!-- Status -->
+          <div class="mb-3">
+            <label class="form-label text-warning">Status</label>
+            <select name="status" class="form-select">
+              <option value="Primary" {% if emailtemplate.is_primary %}selected{% endif %}>Primary</option>
+              <option value="Secondary" {% if not emailtemplate.is_primary %}selected{% endif %}>Secondary</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+  <label class="form-label text-warning">Body</label>
+  <textarea name="body" class="form-control" rows="6" placeholder="Enter email body here...">{{ emailtemplate.email_body }}</textarea>
+</div>
+
+          
+          <!-- Created On -->
+          {% comment %} <div class="mb-3">
+            <label class="form-label text-warning">Created On</label>
+            <input type="text" class="form-control" value="{{ emailtemplate.created_at }}" readonly>
+          </div>
+
+          <!-- Updated On -->
+          <div class="mb-3">
+            <label class="form-label text-warning">Updated On</label>
+            <input type="text" class="form-control" value="{{ emailtemplate.updated_at }}" readonly>
+          </div> {% endcomment %}
+
+        </div>
+        <div class="card-footer text-center">
+      <button type="submit" class="btn btn-success btn-custom">Save</button>
+      <a href="{% url 'configure' %}" class="btn btn-secondary btn-custom">Cancel</a>
+
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% comment %} <script>
+  let statusvalue=document.querySelector('.one').value;
+
+
+</script> {% endcomment %}
+
+{% endblock %}

@@ -1,0 +1,29 @@
+body {
+    background: linear-gradient(to right, #1e293b, #0f172a);
+    color: white;
+    min-height: 100vh;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+}
+
+.btn-action {
+    margin-right: 5px;
+}
+
+.search-bar input {
+    background-color: #334155;
+    border: none;
+    color: white;
+}
+
+.search-bar input::placeholder {
+    color: #94a3b8;
+}
+.h1
+{
+    color: white;
+}
+

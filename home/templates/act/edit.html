@@ -1,0 +1,86 @@
+{% extends "act/base.html" %}
+{% load static %}
+
+{% block title %}
+    Edit Recipient
+{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('https://picsum.photos/1600/900?blur=10') no-repeat center center/cover;
+  }
+
+  .form-wrapper {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(17, 24, 39, 0.85);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    width: 100%;
+    max-width: 500px;
+    color: #fff;
+  }
+
+  .form-label {
+    font-weight: 500;
+  }
+
+  .btn-custom {
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+  }
+</style>
+
+<div class="form-wrapper">
+  <h3 class="mb-4 text-center">Edit Recipient</h3>
+  <form method="POST">
+    {% csrf_token %}
+
+    <!-- Name -->
+    <div class="mb-3">
+      <label for="name" class="form-label">Full Name</label>
+      <input type="text" class="form-control" id="name" name="name" 
+             value="{{ recep.name }}" required>
+    </div>
+
+    <!-- Email -->
+    <div class="mb-3">
+      <label for="email" class="form-label">Email Address</label>
+      <input type="email" class="form-control" id="email" name="email" 
+             value="{{ recep.email_address }}" required>
+    </div>
+
+    <!-- Category -->
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <select class="form-select" id="category" name="category">
+        <option value="None" {% if recep.category == "None" %}selected{% endif %}>None</option>
+        <option value="Promotional" {% if recep.category == "Promotional" %}selected{% endif %}>Promotional</option>
+        <option value="Transactional" {% if recep.category == "Transactional" %}selected{% endif %}>Transactional</option>
+        <option value="Personal" {% if recep.category == "Personal" %}selected{% endif %}>Personal</option>
+      </select>
+    </div>
+
+    <!-- Comments -->
+    <div class="mb-3">
+      <label for="comments" class="form-label">Comments</label>
+      <textarea class="form-control" id="comments" name="comments" rows="3">{{ recep.comment }}</textarea>
+    </div>
+
+    <!-- Submit buttons -->
+    <div class="d-flex justify-content-between">
+      <a href="{% url 'home' %}" class="btn btn-secondary btn-custom">Cancel</a>
+      <button type="submit" class="btn btn-success btn-custom">Update Recipient</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

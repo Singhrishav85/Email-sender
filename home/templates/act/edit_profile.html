@@ -1,0 +1,109 @@
+{% extends "act/base.html" %}
+{% load static %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background-color: #1e1e2f; /* Page background */
+  }
+  .card {
+    background-color: #2a2a40; /* Card background */
+    color: #fff;
+  }
+  .form-control {
+    background-color: #3b3b5a; /* Input background */
+    color: #fff;
+    border: 1px solid #555;
+  }
+  .form-control:focus {
+    background-color: #3b3b5a;
+    color: #fff;
+    border-color: #4ccead;
+    box-shadow: none;
+  }
+  .btn-custom {
+    background-color: #4ccead;
+    color: #1a1a2e;
+    font-weight: 600;
+  }
+  .btn-custom:hover {
+    background-color: #3aa88e;
+    color: #fff;
+  }
+  .profile-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 2px solid #4ccead;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm p-4">
+
+        <h3 class="text-center mb-4">Edit Profile</h3>
+
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <!-- Profile Image -->
+          <div class="text-center mb-3">
+            {% if user.profile_image %}
+              <img src="{{ user.profile_image.url }}" class="profile-img" alt="Profile Image">
+            {% else %}
+              <img src="{% static 'images/default-avatar.png' %}" class="profile-img" alt="Default Image">
+            {% endif %}
+            <input type="file" name="profile_image" class="form-control mt-2">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">First Name *</label>
+            <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Last Name *</label>
+            <input type="text" name="last_name" class="form-control" value="{{ user.last_name }}" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Email *</label>
+            <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Phone</label>
+            <input type="text" name="phone" class="form-control" value="{{ user.phone }}">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Organization</label>
+            <input type="text" name="organization" class="form-control" value="{{ user.organization }}">
+          </div>
+
+          {% comment %} <div class="mb-3">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" name="date_of_birth" class="form-control" value="{{ user.date_of_birth }}">
+          </div>
+
+           {% endcomment %}
+
+          <div class="mb-3">
+            <label class="form-label">Email Host Password</label>
+            <input type="password" name="email_pass" class="form-control" value="{{ user.email_pass }}">
+          </div>
+
+          <button type="submit" class="btn btn-custom w-100 mt-3">Save Changes</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

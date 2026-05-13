@@ -1,0 +1,16 @@
+{% extends "act/base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ title|default:"EMAIL" }}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Welcome to the Email Service</h1>
+        <p>This is a simple email service application.</p>
+        <a href="{% url 'send_email' %}">
+        <button class="btn btn-primary">Send Email</button>
+        </a>
+    </div>
+{% endblock %}

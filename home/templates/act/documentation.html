@@ -1,0 +1,209 @@
+{% extends "act/base.html" %}
+{% load static %}
+{% block title %}Email Sender — Documentation{% endblock %}
+
+{% block content %} 
+<style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background-color: #0f172a; /* A nice dark blue as a fallback */
+      background: url('https://picsum.photos/1600/900?blur=10') no-repeat center center/cover;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #e5e7eb;
+    }
+
+    .container {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+    .doc-wrapper {
+      position: relative; /* For positioning the close button */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(10, 10, 20, 0.8);
+      padding: 20px 40px 40px 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+      width: 100%;
+      max-width: 960px;
+      margin: auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        color: #9ca3af;
+        text-decoration: none;
+        font-size: 2.5rem;
+        font-weight: 300;
+        line-height: 1;
+        transition: color 0.2s;
+    }
+
+    .close-btn:hover {
+        color: #fff;
+    }
+
+    .doc-nav {
+        display: flex;
+        justify-content: center;
+        padding: 15px 0;
+        margin-bottom: 30px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .doc-nav a {
+        color: #9ca3af;
+        text-decoration: none;
+        padding: 8px 16px;
+        margin: 0 8px;
+        border-radius: 8px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .doc-nav a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+
+    .doc-section {
+        background: rgba(30, 30, 50, 0.6);
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .doc-wrapper h1, .doc-wrapper h2 {
+      color: #fff;
+      border-bottom: 1px solid #4b5563;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .doc-wrapper h1 {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 600;
+        border: none;
+        padding-bottom: 0;
+    }
+
+    .doc-wrapper p, .doc-wrapper li {
+      color: #d1d5db;
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+
+    pre {
+      background: #111827;
+      color: #e5e7eb;
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      overflow-x: auto;
+      border: 1px solid #374151;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+
+    code {
+      background: #374151;
+      color: #f3f4f6;
+      padding: 3px 6px;
+      border-radius: 5px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+</style>
+
+<div class="container">
+    <div class="doc-wrapper">
+        <a href="{% url 'dash' %}" class="close-btn">&times;</a>
+        <h1>Email Sender Docs</h1>
+        <p class="text-center mb-4" style="color: #9ca3af;">Your guide to using the Django Email Sender application.</p>
+
+        <nav class="doc-nav">
+            <a href="#overview">Overview</a>
+            <a href="#features">Features</a>
+            <a href="#setup">Setup</a>
+            <a href="#usage">Usage</a>
+            <a href="#faq">FAQ</a>
+        </nav>
+
+        <section id="overview" class="doc-section">
+            <h2><i class="fas fa-rocket"></i> Overview</h2>
+            <p>This application is a powerful tool built with Django to manage and send emails. It provides a dashboard for managing recipients, composing emails, and viewing send history. It's designed to be simple to set up and use, while offering robust features for both individual and bulk emailing.</p>
+        </section>
+
+        <section id="features" class="doc-section">
+            <h2><i class="fas fa-star"></i> Features</h2>
+            <ul>
+                <li><strong>Recipient Management:</strong> Easily add, edit, and categorize recipients.</li>
+                <li><strong>Email Composition:</strong> A simple interface for writing and sending emails.</li>
+                <li><strong>User Authentication:</strong> Secure login and registration system for users.</li>
+                <li><strong>Dashboard:</strong> A central hub to view your emailing activity at a glance.</li>
+                <li><strong>Django Integration:</strong> Built natively within the Django framework for easy extension.</li>
+            </ul>
+        </section>
+
+        <section id="setup" class="doc-section">
+            <h2><i class="fas fa-cogs"></i> Configuration & Setup</h2>
+            <p>To get the application running, you need to configure your email backend in the main <code>settings.py</code> file. We recommend using environment variables for security.</p>
+            <pre>
+# In your settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.your-email-provider.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your-email@example.com'  # Your sender email
+EMAIL_HOST_PASSWORD = 'your-email-password' # Your email password or app password
+</pre>
+            <p>After configuration, run the standard Django migrations:</p>
+            <pre>
+python manage.py migrate
+python manage.py runserver
+</pre>
+        </section>
+
+        <section id="usage" class="doc-section">
+            <h2><i class="fas fa-book-open"></i> How to Use</h2>
+            <p>The core functionality is handled through the web interface. Once you've logged in, you can navigate using the dashboard.</p>
+            <ol>
+                <li><strong>Add Recipients:</strong> Go to the 'Recipients' page and add the email addresses of people you want to contact.</li>
+                <li><strong>Compose Email:</strong> Navigate to the 'Send Email' page. Select your recipients, write a subject and body, and hit send.</li>
+                <li><strong>Check Status:</strong> The dashboard will show you a summary of recent activity.</li>
+            </ol>
+            <p>For developers, sending an email programmatically is also simple using Django's built-in mail functions:</p>
+            <pre>
+# From a view or a utility script
+from django.core.mail import send_mail
+
+send_mail(
+    'Your Subject Here',
+    'Here is the message.',
+    'from@example.com', # Must match EMAIL_HOST_USER
+    ['recipient1@example.com', 'recipient2@example.com'],
+    fail_silently=False,
+)
+</pre>
+        </section>
+
+        <section id="faq" class="doc-section">
+            <h2><i class="fas fa-question-circle"></i> FAQ</h2>
+            <p><strong>Q: Can I use Gmail as my email host?</strong><br>
+               <strong>A:</strong> Yes. You'll need to enable "Less secure app access" or, preferably, generate an "App Password" from your Google account settings. Use <code>smtp.gmail.com</code> as the <code>EMAIL_HOST</code>.
+            </p>
+            <p><strong>Q: How are user passwords stored?</strong><br>
+               <strong>A:</strong> The application uses Django's built-in authentication system, which securely hashes and salts passwords. They are never stored in plaintext.
+            </p>
+        </section>
+
+    </div>
+</div>
+
+{% endblock %}

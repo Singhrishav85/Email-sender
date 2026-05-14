@@ -24,13 +24,27 @@
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    background-color: var(--bg-dark);
+    background: radial-gradient(circle at center, #0a0f2e 0%, #020617 100%);
     font-family: 'Outfit', sans-serif;
     color: var(--text-main);
     overflow-x: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/cubes.png');
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 0;
   }
 
   /* Animated Background Blobs */
@@ -49,39 +63,21 @@
     width: 500px;
     height: 500px;
     background: radial-gradient(circle, rgba(0, 242, 255, 0.15) 0%, rgba(112, 0, 255, 0.05) 100%);
-    filter: blur(80px);
+    filter: blur(100px);
     border-radius: 50%;
-    animation: move 20s infinite alternate;
+    animation: move 20s infinite alternate cubic-bezier(0.45, 0, 0.55, 1);
+    mix-blend-mode: screen;
   }
 
-  .blob-1 {
-    top: -100px;
-    right: -100px;
-    animation-delay: 0s;
-  }
-
-  .blob-2 {
-    bottom: -150px;
-    left: -150px;
-    animation-delay: -5s;
-  }
-
-  .blob-3 {
-    top: 40%;
-    left: 30%;
-    width: 300px;
-    height: 300px;
-    animation-delay: -10s;
-  }
+  .blob-1 { top: -10%; left: -10%; background: radial-gradient(circle, rgba(0, 242, 255, 0.2), transparent); }
+  .blob-2 { bottom: -10%; right: -10%; background: radial-gradient(circle, rgba(112, 0, 255, 0.2), transparent); animation-delay: -5s; }
+  .blob-3 { top: 40%; left: 30%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(0, 242, 255, 0.1), transparent); animation-delay: -10s; }
+  .blob-4 { bottom: 20%; left: 10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(112, 0, 255, 0.1), transparent); animation-delay: -15s; }
 
   @keyframes move {
-    0% {
-      transform: translate(0, 0) scale(1);
-    }
-
-    100% {
-      transform: translate(100px, 100px) scale(1.2);
-    }
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    50% { transform: translate(100px, 50px) scale(1.1) rotate(90deg); }
+    100% { transform: translate(-50px, 100px) scale(0.9) rotate(180deg); }
   }
 
   /* Main Container */
@@ -90,13 +86,20 @@
     max-width: 95%;
     min-height: 550px;
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(30px);
     border: 1px solid var(--glass-border);
     border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    animation: fadeIn 0.8s ease-out;
+    box-shadow: 0 25px 80px -20px rgba(0, 0, 0, 0.8);
+    animation: fadeIn 1s cubic-bezier(0.22, 1, 0.36, 1);
     position: relative;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    z-index: 1;
+  }
+
+  .login-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 35px 100px -20px rgba(0, 242, 255, 0.15);
   }
 
   @keyframes fadeIn {
@@ -397,6 +400,7 @@
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
 </div>
 
 <div class="login-container">
@@ -506,6 +510,21 @@
       el.style.opacity = '1';
       el.style.transform = 'translateX(0)';
     }, 400 + (index * 100));
+  });
+
+  // Interactive Background Blobs (Mouse Parallax)
+  document.addEventListener('mousemove', (e) => {
+    const blobs = document.querySelectorAll('.blob');
+    const x = e.clientX;
+    const y = e.clientY;
+
+    blobs.forEach((blob, index) => {
+      const speed = (index + 1) * 20;
+      const moveX = (window.innerWidth / 2 - x) / speed;
+      const moveY = (window.innerHeight / 2 - y) / speed;
+
+      blob.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
   });
 </script>
 {% endblock %}

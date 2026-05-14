@@ -49,19 +49,33 @@
 
     /* ── Dynamic action bar ── */
     #selectionActionBar {
-        overflow: hidden;
-        max-height: 0;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        margin-top: 5px;
+        z-index: 1000;
+        background: #1e293b;
+        padding: 10px 15px;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.1);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        visibility: hidden;
         opacity: 0;
-        transition: max-height 0.3s ease, opacity 0.3s ease;
+        transform: translateY(-10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     #selectionActionBar.bar-visible {
-        max-height: 80px;
+        visibility: visible;
         opacity: 1;
+        transform: translateY(0);
     }
     #selectionCounter {
         font-size: 0.85rem;
-        color: #adb5bd;
-        align-self: center;
+        color: #94a3b8;
+        font-weight: 500;
     }
 
     /* ── Scrollable table container ── */
@@ -211,11 +225,33 @@
 <div class="container mt-4">
   <h2 class="h5 mb-3">Recipients</h2>
 
-  <div class="d-flex flex-column flex-md-row mb-3 search-bar">
-    <input type="text" class="form-control me-0 me-md-2 mb-2 mb-md-0 rounded-pill" placeholder="Search by name, Category, Comments, Emails">
-    <button class="btn btn-primary rounded-pill">
-      <i class="fa fa-search"></i>
-    </button>
+  <div class="position-relative mb-3">
+    <div class="d-flex flex-column flex-md-row search-bar">
+      <input type="text" class="form-control me-0 me-md-2 mb-2 mb-md-0 rounded-pill" placeholder="Search by name, Category, Comments, Emails">
+      <button class="btn btn-primary rounded-pill">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+
+    <!-- Dynamic action bar: visible only when checkboxes are ticked -->
+    <div id="selectionActionBar" aria-live="polite">
+      <span id="selectionCounter">0 selected</span>
+
+      <!-- Send to Selected → submits the main recipient form -->
+      <button type="submit"
+              form="recipientForm"
+              id="btn-send-selected"
+              class="btn btn-warning btn-sm">
+        <i class="fa fa-paper-plane"></i> Send
+      </button>
+
+      <!-- Delete Selected → submits a separate hidden form -->
+      <button type="button"
+              id="btn-delete-selected"
+              class="btn btn-danger btn-sm">
+        <i class="fa fa-trash"></i> Delete
+      </button>
+    </div>
   </div>
 
   <!-- Static toolbar: always visible -->
@@ -229,26 +265,6 @@
     <a href="{% url 'uploadfile' %}" class="btn btn-primary me-1">
       <i class="fa fa-file-upload"></i> Upload CSV
     </a>
-  </div>
-
-  <!-- Dynamic action bar: visible only when checkboxes are ticked -->
-  <div id="selectionActionBar" class="mb-3 d-flex flex-wrap align-items-center gap-2" aria-live="polite">
-    <span id="selectionCounter" class="me-2">0 selected</span>
-
-    <!-- Send to Selected → submits the main recipient form -->
-    <button type="submit"
-            form="recipientForm"
-            id="btn-send-selected"
-            class="btn btn-warning">
-      <i class="fa fa-paper-plane"></i> Send to Selected
-    </button>
-
-    <!-- Delete Selected → submits a separate hidden form -->
-    <button type="button"
-            id="btn-delete-selected"
-            class="btn btn-danger">
-      <i class="fa fa-trash"></i> Delete Selected
-    </button>
   </div>
 
   <!-- Hidden form for bulk delete (shares selected_ids via JS) -->

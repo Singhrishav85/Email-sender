@@ -5,9 +5,9 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
+# ─────────────────────────────────────────────────────────────────────────────
+# SECURITY
+# ─────────────────────────────────────────────────────────────────────────────
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-g)l@i9z$S&3+F#s@k!f(r#s_v*w)p(r^c&x#m#o@p&q*a)b'
 
@@ -17,8 +17,9 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
-# Application definition
-
+# ─────────────────────────────────────────────────────────────────────────────
+# APPLICATION DEFINITION
+# ─────────────────────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # My apps
+    # Project apps
     'home',
     'template',
 ]
@@ -53,20 +54,19 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',  # <-- Important
+                'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
     },
 ]
 
-
 WSGI_APPLICATION = 'mail.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
+# ─────────────────────────────────────────────────────────────────────────────
+# DATABASE
+# ─────────────────────────────────────────────────────────────────────────────
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -75,64 +75,55 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
+# ─────────────────────────────────────────────────────────────────────────────
+# PASSWORD VALIDATION
+# ─────────────────────────────────────────────────────────────────────────────
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
+# ─────────────────────────────────────────────────────────────────────────────
+# INTERNATIONALISATION
+# ─────────────────────────────────────────────────────────────────────────────
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'Asia/Kolkata'
-
+TIME_ZONE     = 'Asia/Kolkata'
 USE_I18N = True
+USE_TZ   = True
 
-USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-
-STATIC_URL = '/static/'
+# ─────────────────────────────────────────────────────────────────────────────
+# STATIC & MEDIA FILES
+# ─────────────────────────────────────────────────────────────────────────────
+STATIC_URL  = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
-
-# Media files
-MEDIA_URL = '/media/'
+MEDIA_URL  = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# mail/settings.py
-'django.contrib.sessions.middleware.SessionMiddleware',
 
-# settings.py
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'           
-EMAIL_USE_TLS = True                     
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'rishavsingh9725@gmail.com'
-EMAIL_HOST_PASSWORD = 'cgey qnnp yzft vxig'
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# ─────────────────────────────────────────────────────────────────────────────
+# EMAIL BACKEND — Gmail SMTP
+# Replace EMAIL_HOST_USER / EMAIL_HOST_PASSWORD with your own credentials.
+# For production use environment variables instead of hard-coding.
+# ─────────────────────────────────────────────────────────────────────────────
+EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST          = 'smtp.gmail.com'
+EMAIL_USE_TLS       = True
+EMAIL_PORT          = 587
+EMAIL_HOST_USER     = 'rishavsingh9725@gmail.com'      # ← your Gmail address
+EMAIL_HOST_PASSWORD = 'cgey qnnp yzft vxig'            # ← your Gmail App Password
+DEFAULT_FROM_EMAIL  = EMAIL_HOST_USER
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OTP CONFIGURATION
+# ─────────────────────────────────────────────────────────────────────────────
+OTP_EXPIRY_MINUTES  = 5    # OTP is valid for 5 minutes
+OTP_MAX_PER_HOUR    = 5    # Max OTP sends allowed per email per hour (rate limit)

@@ -180,6 +180,70 @@
         background: rgba(255,255,255,0.08) !important;
         transform: scale(1.03);
     }
+
+    /* Dashboard return button in navbar */
+    .btn-dashboard-nav {
+        color: #fff;
+        background: rgba(0, 123, 255, 0.2);
+        border: 1px solid #007bff;
+        padding: 6px 16px;
+        border-radius: 20px;
+        margin-left: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .btn-dashboard-nav:hover {
+        background: #007bff !important;
+        box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
+        color: #fff !important;
+        transform: translateY(-2px);
+    }
+
+    .navbar-welcome {
+        color: #00f2ff;
+        margin-left: 20px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    /* Glassmorphic welcome card in Hero Section */
+    .welcome-container {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 30px 40px;
+        max-width: 550px;
+        margin: 0 auto 35px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s ease;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .welcome-container:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(0, 242, 255, 0.3);
+        box-shadow: 0 20px 40px rgba(0, 242, 255, 0.15);
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 </style>
 
 <nav class="navbar">
@@ -188,7 +252,19 @@
         <a href="{% url 'documentation' %}">Documentation</a>
         <a href="{% url 'about' %}">About</a>
         <a href="https://github.com/Singhrishav85">GitHub</a>
-        <a href="{% url 'login' %}" class="navbar-login">Login</a>
+        {% if user %}
+            <span class="navbar-welcome">
+                <i class="fa-solid fa-circle-user"></i> Welcome, {{ user.first_name }}!
+            </span>
+            <a href="{% url 'home' %}" class="btn-dashboard-nav">
+                <i class="fa-solid fa-gauge"></i> Dashboard
+            </a>
+            <a href="{% url 'logout' %}" class="navbar-login text-danger" style="margin-left: 15px;" title="Logout">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
+        {% else %}
+            <a href="{% url 'login' %}" class="navbar-login">Login</a>
+        {% endif %}
     </div>
     <div class="navbar-hamburger">
         <span></span>
@@ -200,8 +276,21 @@
 <div class="hero-section">
     <h1>Send Emails with Ease</h1>
     <p>A powerful and reliable solution for all your email needs.</p>
-    <a href="{% url 'login' %}" class="btn btn-primary">Get Started</a>
-
+    {% if user %}
+        <div class="welcome-container">
+            <h2 style="color: #00f2ff; font-size: 1.8rem; margin: 0 0 10px 0; font-weight: 700;">
+                <i class="fa-solid fa-hand-wave me-2" style="color: #ffc107;"></i>Welcome back, {{ user.first_name }} {{ user.last_name }}!
+            </h2>
+            <p style="color: #e2e8f0; font-size: 1.05rem; margin: 0; line-height: 1.5;">
+                You are currently logged in. Access your dashboard below to manage recipients and compose mail campaigns.
+            </p>
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-primary btn-lg" style="box-shadow: 0 0 15px rgba(0, 123, 255, 0.4); font-weight: 600; padding: 12px 35px; border-radius: 8px;">
+            <i class="fa-solid fa-gauge-high me-2"></i>Go to Workspace Dashboard
+        </a>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-primary">Get Started</a>
+    {% endif %}
 </div>
 
 <div class="stats-section">

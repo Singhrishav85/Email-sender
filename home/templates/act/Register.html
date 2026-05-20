@@ -1,301 +1,254 @@
 {% extends "act/base.html" %}
-{% block title %}Register - Bulk Email Sender{% endblock %}
+{% block title %}Register - BulkMail Pro{% endblock %}
 {% load static %}
 
 {% block content %}
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-  :root {
-    --primary: #00f2ff;
-    --secondary: #7000ff;
-    --bg-dark: #020617;
-    --glass-bg: rgba(15, 23, 42, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --neon-glow: 0 0 15px rgba(0, 242, 255, 0.4);
-  }
+:root {
+  --primary: #00f2ff;
+  --secondary: #7000ff;
+  --bg-dark: #020617;
+  --glass-bg: rgba(15,23,42,0.75);
+  --glass-border: rgba(255,255,255,0.1);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+}
 
-  body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    background: radial-gradient(circle at center, #0a0f2e 0%, #020617 100%);
-    font-family: 'Outfit', sans-serif;
-    color: var(--text-main);
-    overflow-x: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 0;
-    position: relative;
-  }
-  
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('https://www.transparenttextures.com/patterns/cubes.png');
-    opacity: 0.03;
-    pointer-events: none;
-    z-index: 0;
-  }
+body {
+  margin:0; padding:40px 0;
+  min-height:100vh;
+  background: radial-gradient(circle at center,#0a0f2e 0%,#020617 100%);
+  font-family:'Outfit',sans-serif;
+  color:var(--text-main);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow-x:hidden;
+}
 
-  /* Animated Background Blobs */
-  .bg-blobs {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    overflow: hidden;
-  }
+/* Animated blobs */
+.bg-blobs { position:fixed; inset:0; z-index:-1; overflow:hidden; }
+.blob {
+  position:absolute; width:500px; height:500px;
+  border-radius:50%; filter:blur(100px);
+  animation:move 20s infinite alternate cubic-bezier(.45,0,.55,1);
+  mix-blend-mode:screen;
+}
+.blob-1{top:-10%;left:-10%;background:radial-gradient(circle,rgba(0,242,255,.2),transparent);}
+.blob-2{bottom:-10%;right:-10%;background:radial-gradient(circle,rgba(112,0,255,.2),transparent);animation-delay:-5s;}
+.blob-3{top:40%;left:30%;width:300px;height:300px;background:radial-gradient(circle,rgba(0,242,255,.1),transparent);animation-delay:-10s;}
+.blob-4{bottom:20%;left:10%;width:400px;height:400px;background:radial-gradient(circle,rgba(112,0,255,.1),transparent);animation-delay:-15s;}
+@keyframes move{
+  0%{transform:translate(0,0) scale(1);}
+  50%{transform:translate(100px,50px) scale(1.1);}
+  100%{transform:translate(-50px,100px) scale(.9);}
+}
 
-  .blob {
-    position: absolute;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(0, 242, 255, 0.15) 0%, rgba(112, 0, 255, 0.05) 100%);
-    filter: blur(100px);
-    border-radius: 50%;
-    animation: move 20s infinite alternate cubic-bezier(0.45, 0, 0.55, 1);
-    mix-blend-mode: screen;
-  }
+/* Card */
+.register-container {
+  width:880px; max-width:96%;
+  background:var(--glass-bg);
+  backdrop-filter:blur(30px);
+  border:1px solid var(--glass-border);
+  border-radius:28px; padding:50px;
+  box-shadow:0 25px 80px -20px rgba(0,0,0,.8);
+  animation:fadeIn .9s cubic-bezier(.22,1,.36,1);
+  position:relative; overflow:hidden; z-index:1;
+}
+.register-container:hover{ box-shadow:0 35px 100px -20px rgba(0,242,255,.15); }
+@keyframes fadeIn{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
 
-  .blob-1 { top: -10%; left: -10%; background: radial-gradient(circle, rgba(0, 242, 255, 0.2), transparent); }
-  .blob-2 { bottom: -10%; right: -10%; background: radial-gradient(circle, rgba(112, 0, 255, 0.2), transparent); animation-delay: -5s; }
-  .blob-3 { top: 40%; left: 30%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(0, 242, 255, 0.1), transparent); animation-delay: -10s; }
-  .blob-4 { bottom: 20%; left: 10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(112, 0, 255, 0.1), transparent); animation-delay: -15s; }
+/* Animated border */
+.register-container::before{
+  content:''; position:absolute; inset:0; border-radius:28px; padding:2px;
+  background:linear-gradient(45deg,transparent,var(--primary),transparent,var(--secondary),transparent);
+  background-size:200% 200%;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  pointer-events:none; animation:borderRotate 5s linear infinite; opacity:.4;
+}
+@keyframes borderRotate{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 
-  @keyframes move {
-    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-    50% { transform: translate(100px, 50px) scale(1.1) rotate(90deg); }
-    100% { transform: translate(-50px, 100px) scale(0.9) rotate(180deg); }
-  }
+.header { text-align:center; margin-bottom:36px; }
+.header h2 {
+  font-size:2.2rem; font-weight:700; margin-bottom:8px;
+  background:linear-gradient(to right,#00f2ff,#7000ff);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.header p { color:var(--text-muted); font-size:1.05rem; }
 
-  /* Main Container */
-  .register-container {
-    width: 850px;
-    max-width: 95%;
-    background: var(--glass-bg);
-    backdrop-filter: blur(30px);
-    border: 1px solid var(--glass-border);
-    border-radius: 28px;
-    padding: 50px;
-    box-shadow: 0 25px 80px -20px rgba(0, 0, 0, 0.8);
-    animation: fadeIn 1s cubic-bezier(0.22, 1, 0.36, 1);
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    z-index: 1;
-  }
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+.full-width { grid-column:span 2; }
 
-  .register-container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 35px 100px -20px rgba(0, 242, 255, 0.15);
-  }
+/* Input wrappers */
+.input-wrapper { position:relative; }
+.input-wrapper label {
+  display:block; margin-bottom:7px; font-size:.88rem;
+  font-weight:600; color:var(--text-muted); transition:color .3s;
+}
+.input-wrapper:focus-within label { color:var(--primary); }
+.required-star { color:#ff4d4d; margin-left:3px; }
+.input-wrapper .field-icon {
+  position:absolute; left:15px; bottom:15px;
+  color:var(--text-muted); transition:color .3s; pointer-events:none;
+}
+.input-wrapper:focus-within .field-icon { color:var(--primary); }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+.input-field {
+  width:100%; background:rgba(255,255,255,.04);
+  border:1px solid var(--glass-border); border-radius:12px;
+  padding:13px 13px 13px 46px; color:var(--text-main);
+  font-family:inherit; font-size:.97rem;
+  transition:all .3s cubic-bezier(.4,0,.2,1); box-sizing:border-box;
+}
+.input-field:focus {
+  outline:none; border-color:var(--primary);
+  background:rgba(255,255,255,.07);
+  box-shadow:0 0 20px rgba(0,242,255,.12);
+}
+.input-field[type="date"]::-webkit-calendar-picker-indicator{ filter:invert(1); cursor:pointer; }
 
-  /* Border Animation */
-  .register-container::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    border-radius: 28px;
-    padding: 2px;
-    background: linear-gradient(45deg, transparent, var(--primary), transparent, var(--secondary), transparent);
-    background-size: 200% 200%;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    animation: borderRotate 5s linear infinite;
-    opacity: 0.4;
-  }
+.toggle-password {
+  position:absolute; right:14px; bottom:14px;
+  cursor:pointer; color:var(--text-muted);
+  transition:color .3s; z-index:2;
+}
+.toggle-password:hover { color:var(--primary); }
 
-  @keyframes borderRotate {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
+/* ── OTP Section ────────────────────────────────────────── */
+.otp-section {
+  grid-column:span 2;
+  background:rgba(0,242,255,.04);
+  border:1px solid rgba(0,242,255,.15);
+  border-radius:16px; padding:24px 22px;
+  display:flex; flex-direction:column; gap:14px;
+}
+.otp-section-title {
+  font-size:.9rem; font-weight:700; color:var(--primary);
+  display:flex; align-items:center; gap:8px; margin-bottom:4px;
+}
+.otp-row { display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; }
+.otp-row .input-wrapper { flex:1; min-width:160px; }
 
-  .header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
+/* OTP digit input box – stylish */
+.otp-input-styled {
+  letter-spacing:10px; font-size:1.4rem; font-weight:700;
+  text-align:center; padding:13px 14px !important;
+}
+.otp-input-styled::-webkit-inner-spin-button,
+.otp-input-styled::-webkit-outer-spin-button { -webkit-appearance:none; }
 
-  .header h2 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    background: linear-gradient(to right, #00f2ff, #7000ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+/* Buttons */
+.btn-otp {
+  padding:13px 20px; border-radius:12px; border:none;
+  font-weight:700; font-size:.9rem; cursor:pointer;
+  transition:all .3s ease; white-space:nowrap;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.btn-send-otp {
+  background:linear-gradient(90deg,var(--primary),#0099ff);
+  color:#000; box-shadow:0 4px 15px rgba(0,242,255,.25);
+}
+.btn-send-otp:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(0,242,255,.4); }
+.btn-send-otp:disabled { opacity:.5; cursor:not-allowed; transform:none; }
 
-  .header p {
-    color: var(--text-muted);
-    font-size: 1.1rem;
-  }
+.btn-verify-otp {
+  background:linear-gradient(90deg,var(--secondary),#a020f0);
+  color:#fff; box-shadow:0 4px 15px rgba(112,0,255,.25);
+}
+.btn-verify-otp:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(112,0,255,.4); }
+.btn-verify-otp:disabled { opacity:.5; cursor:not-allowed; transform:none; }
 
-  /* Form Grid */
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
+.btn-resend {
+  background:transparent; color:var(--text-muted);
+  border:1px solid var(--glass-border); font-size:.82rem; padding:8px 14px;
+  border-radius:8px; cursor:pointer; transition:all .3s;
+  display:none;
+}
+.btn-resend:hover { border-color:var(--primary); color:var(--primary); }
+.btn-resend.visible { display:inline-flex; align-items:center; gap:6px; }
 
-  .full-width {
-    grid-column: span 2;
-  }
+/* Verified badge */
+.verified-badge {
+  display:none; align-items:center; gap:8px;
+  background:rgba(16,185,129,.12); border:1px solid rgba(16,185,129,.3);
+  border-radius:10px; padding:10px 16px;
+  color:var(--success); font-weight:600; font-size:.9rem;
+}
+.verified-badge.show { display:flex; }
 
-  /* Input Styles */
-  .input-wrapper label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    transition: color 0.3s ease;
-  }
+/* Alert toast */
+.otp-alert {
+  border-radius:10px; padding:11px 16px;
+  font-size:.88rem; font-weight:500;
+  display:none; align-items:center; gap:8px;
+}
+.otp-alert.show { display:flex; }
+.otp-alert.success { background:rgba(16,185,129,.12); border:1px solid rgba(16,185,129,.3); color:#34d399; }
+.otp-alert.error   { background:rgba(239,68,68,.12);  border:1px solid rgba(239,68,68,.3);  color:#f87171; }
+.otp-alert.info    { background:rgba(0,242,255,.08);  border:1px solid rgba(0,242,255,.2);  color:var(--primary); }
 
-  .input-wrapper label .required-star {
-    color: #ff4d4d;
-    margin-left: 3px;
-    font-weight: 800;
-  }
+/* Countdown */
+.otp-timer { font-size:.8rem; color:var(--text-muted); margin-top:4px; min-height:18px; }
+.otp-timer.urgent { color:var(--danger); }
 
-  .input-wrapper i {
-    position: absolute;
-    left: 16px;
-    bottom: 15px;
-    color: var(--text-muted);
-    transition: color 0.3s ease;
-  }
+/* Spinner */
+.spinner {
+  display:inline-block; width:16px; height:16px;
+  border:2px solid rgba(0,0,0,.3); border-top-color:#000;
+  border-radius:50%; animation:spin .6s linear infinite;
+}
+@keyframes spin { to{ transform:rotate(360deg); } }
 
-  .input-field {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    padding: 14px 14px 14px 48px;
-    color: var(--text-main);
-    font-family: inherit;
-    font-size: 1rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-sizing: border-box;
-  }
+/* Submit button */
+.btn-submit {
+  width:100%; padding:16px; border-radius:12px; border:none;
+  background:linear-gradient(90deg,var(--primary),var(--secondary));
+  color:#fff; font-weight:700; font-size:1.08rem;
+  cursor:pointer; transition:all .3s ease; margin-top:28px;
+  box-shadow:0 4px 15px rgba(0,0,0,.2);
+  position:relative; overflow:hidden;
+}
+.btn-submit:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 25px rgba(0,242,255,.3); }
+.btn-submit:disabled {
+  opacity:.45; cursor:not-allowed; transform:none;
+  background:linear-gradient(90deg,#374151,#4b5563);
+}
+.btn-submit .lock-icon { margin-right:6px; }
 
-  .input-field:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: rgba(255, 255, 255, 0.07);
-    box-shadow: 0 0 20px rgba(0, 242, 255, 0.12);
-  }
+/* Terms */
+.terms-check { display:flex; align-items:center; gap:10px; margin-top:18px; color:var(--text-muted); font-size:.93rem; }
+.terms-check input { width:18px; height:18px; accent-color:var(--primary); cursor:pointer; }
+.terms-check a { color:var(--primary); text-decoration:none; font-weight:600; }
 
-  .input-wrapper:focus-within label {
-    color: var(--primary);
-  }
+.login-link { text-align:center; margin-top:26px; color:var(--text-muted); }
+.login-link a { color:var(--primary); text-decoration:none; font-weight:700; }
 
-  .input-field:focus + i {
-    color: var(--primary);
-  }
+/* Django messages */
+.django-messages { margin-bottom:20px; }
+.django-msg {
+  border-radius:10px; padding:12px 16px; margin-bottom:8px;
+  display:flex; align-items:center; gap:10px; font-size:.9rem; font-weight:500;
+}
+.django-msg.error   { background:rgba(239,68,68,.12);  border:1px solid rgba(239,68,68,.3);  color:#f87171; }
+.django-msg.success { background:rgba(16,185,129,.12); border:1px solid rgba(16,185,129,.3); color:#34d399; }
+.django-msg.warning { background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.3); color:#fbbf24; }
 
-  /* Custom Date Style */
-  .input-field[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-    cursor: pointer;
-  }
-
-  /* Eye Toggle */
-  .toggle-password {
-    position: absolute;
-    right: 16px;
-    bottom: 15px;
-    cursor: pointer;
-    color: var(--text-muted);
-    transition: color 0.3s ease;
-  }
-
-  .toggle-password:hover {
-    color: var(--primary);
-  }
-
-  /* Buttons */
-  .btn-submit {
-    width: 100%;
-    padding: 16px;
-    border-radius: 12px;
-    border: none;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    color: #fff;
-    font-weight: 700;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 30px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  }
-
-  .btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 242, 255, 0.3);
-  }
-
-  /* Terms Checkbox */
-  .terms-check {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
-    color: var(--text-muted);
-    font-size: 0.95rem;
-  }
-
-  .terms-check input {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--primary);
-    cursor: pointer;
-  }
-
-  .terms-check a {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  .login-link {
-    text-align: center;
-    margin-top: 30px;
-    color: var(--text-muted);
-  }
-
-  .login-link a {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 700;
-  }
-
-  /* Mobile Responsive */
-  @media (max-width: 768px) {
-    .form-grid { grid-template-columns: 1fr; }
-    .full-width { grid-column: span 1; }
-    .register-container { padding: 30px 20px; }
-  }
+@media(max-width:768px){
+  .form-grid { grid-template-columns:1fr; }
+  .full-width { grid-column:span 1; }
+  .otp-section { grid-column:span 1; }
+  .register-container { padding:28px 18px; }
+  .otp-row { flex-direction:column; }
+}
 </style>
 
+<!-- Animated blobs -->
 <div class="bg-blobs">
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
@@ -306,86 +259,148 @@
 <div class="register-container">
   <div class="header">
     <h2>Join BulkMail Pro</h2>
-    <p>Create your professional account in seconds.</p>
+    <p>Create your account — verify your email to get started.</p>
   </div>
 
-  <form method="POST">
+  <!-- Django server-side messages -->
+  {% if messages %}
+  <div class="django-messages">
+    {% for message in messages %}
+    <div class="django-msg {{ message.tags }}">
+      <i class="fas {% if message.tags == 'error' %}fa-circle-xmark{% elif message.tags == 'success' %}fa-circle-check{% else %}fa-triangle-exclamation{% endif %}"></i>
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <form method="POST" id="registerForm" autocomplete="off">
     {% csrf_token %}
     <div class="form-grid">
+
+      <!-- Username -->
+      <div class="input-wrapper">
+        <label>Username <span class="required-star">*</span></label>
+        <i class="fas fa-at field-icon"></i>
+        <input type="text" name="username" id="username" class="input-field" placeholder="johndoe" required autocomplete="username">
+      </div>
+
+      <!-- Phone -->
+      <div class="input-wrapper">
+        <label>Phone Number <span class="required-star">*</span></label>
+        <i class="fas fa-phone field-icon"></i>
+        <input type="text" name="phone" class="input-field" placeholder="+91 9876543210" required>
+      </div>
+
       <!-- First Name -->
       <div class="input-wrapper">
         <label>First Name <span class="required-star">*</span></label>
-        <i class="fas fa-user"></i>
-        <input type="text" name="first_name" class="input-field" placeholder="John" required value="{{ first_name }}">
+        <i class="fas fa-user field-icon"></i>
+        <input type="text" name="first_name" class="input-field" placeholder="John" required>
       </div>
 
       <!-- Last Name -->
       <div class="input-wrapper">
         <label>Last Name <span class="required-star">*</span></label>
-        <i class="fas fa-user"></i>
-        <input type="text" name="last_name" class="input-field" placeholder="Doe" required value="{{ last_name }}">
-      </div>
-
-      <!-- Email Address -->
-      <div class="input-wrapper">
-        <label>Email Address <span class="required-star">*</span></label>
-        <i class="fas fa-envelope"></i>
-        <input type="email" name="email" class="input-field" placeholder="john@example.com" required value="{{ email }}">
-      </div>
-
-      <!-- Phone Number -->
-      <div class="input-wrapper">
-        <label>Phone Number <span class="required-star">*</span></label>
-        <i class="fas fa-phone"></i>
-        <input type="text" name="phone" class="input-field" placeholder="+1 234 567 890" required value="{{ phone }}">
+        <i class="fas fa-user field-icon"></i>
+        <input type="text" name="last_name" class="input-field" placeholder="Doe" required>
       </div>
 
       <!-- Organization -->
       <div class="input-wrapper full-width">
-        <label>Organization Name <span class="required-star">*</span></label>
-        <i class="fas fa-building"></i>
-        <input type="text" name="organization" class="input-field" placeholder="Company Inc." required value="{{ organization }}">
+        <label>Organization</label>
+        <i class="fas fa-building field-icon"></i>
+        <input type="text" name="organization" class="input-field" placeholder="Company Inc.">
       </div>
 
       <!-- DOB -->
       <div class="input-wrapper full-width">
         <label>Date of Birth <span class="required-star">*</span></label>
-        <i class="fas fa-calendar-alt"></i>
-        <input type="date" name="date" class="input-field" required value="{{ date_of_birth }}">
-      </div>
-
-      <!-- Email Host Password -->
-      <div class="input-wrapper full-width">
-        <label>Email Host App Password</label>
-        <i class="fas fa-key"></i>
-        <input type="password" name="passwords" id="host-pass" class="input-field" placeholder="Enter app password (optional)">
-        <i class="fas fa-eye toggle-password" onclick="togglePass('host-pass')"></i>
+        <i class="fas fa-calendar-alt field-icon"></i>
+        <input type="date" name="date" class="input-field" required>
       </div>
 
       <!-- Password -->
       <div class="input-wrapper">
         <label>Password <span class="required-star">*</span></label>
-        <i class="fas fa-lock"></i>
-        <input type="password" name="password" id="reg-pass" class="input-field" placeholder="Create password" required>
-        <i class="fas fa-eye toggle-password" onclick="togglePass('reg-pass')"></i>
+        <i class="fas fa-lock field-icon"></i>
+        <input type="password" name="password" id="reg-pass" class="input-field" placeholder="Create password" required autocomplete="new-password">
+        <i class="fas fa-eye toggle-password" onclick="togglePass('reg-pass', this)"></i>
       </div>
 
       <!-- Confirm Password -->
       <div class="input-wrapper">
         <label>Confirm Password <span class="required-star">*</span></label>
-        <i class="fas fa-lock"></i>
-        <input type="password" name="confirm_password" id="confirm-pass" class="input-field" placeholder="Confirm password" required>
-        <i class="fas fa-eye toggle-password" onclick="togglePass('confirm-pass')"></i>
+        <i class="fas fa-lock field-icon"></i>
+        <input type="password" name="confirm_password" id="confirm-pass" class="input-field" placeholder="Confirm password" required autocomplete="new-password">
+        <i class="fas fa-eye toggle-password" onclick="togglePass('confirm-pass', this)"></i>
       </div>
-    </div>
+
+      <!-- Email Host App Password -->
+      <div class="input-wrapper full-width">
+        <label>Email Host App Password <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
+        <i class="fas fa-key field-icon"></i>
+        <input type="password" name="passwords" id="host-pass" class="input-field" placeholder="Gmail app password (optional)">
+        <i class="fas fa-eye toggle-password" onclick="togglePass('host-pass', this)"></i>
+      </div>
+
+      <!-- ── EMAIL + OTP SECTION ─────────────────────────────────────── -->
+      <div class="otp-section full-width">
+        <div class="otp-section-title">
+          <i class="fas fa-shield-halved"></i> Email Verification
+        </div>
+
+        <!-- Email row -->
+        <div class="otp-row">
+          <div class="input-wrapper" style="flex:2;">
+            <label>Email Address <span class="required-star">*</span></label>
+            <i class="fas fa-envelope field-icon"></i>
+            <input type="email" name="email" id="emailField" class="input-field"
+                   placeholder="john@example.com" required autocomplete="email">
+          </div>
+          <button type="button" class="btn-otp btn-send-otp" id="sendOtpBtn" onclick="sendOTP()">
+            <i class="fas fa-paper-plane"></i> Send OTP
+          </button>
+        </div>
+
+        <!-- OTP Alert -->
+        <div class="otp-alert" id="otpAlert"></div>
+
+        <!-- OTP input row (hidden until OTP sent) -->
+        <div id="otpVerifyRow" style="display:none;">
+          <div class="otp-row" style="align-items:flex-end;">
+            <div class="input-wrapper" style="flex:2;">
+              <label>Enter 6-Digit OTP <span class="required-star">*</span></label>
+              <i class="fas fa-input-numeric field-icon"></i>
+              <input type="number" id="otpInput" class="input-field otp-input-styled"
+                     placeholder="••••••" maxlength="6" min="100000" max="999999" autocomplete="one-time-code">
+            </div>
+            <button type="button" class="btn-otp btn-verify-otp" id="verifyOtpBtn" onclick="verifyOTP()">
+              <i class="fas fa-circle-check"></i> Verify OTP
+            </button>
+          </div>
+          <div class="otp-timer" id="otpTimer"></div>
+          <button type="button" class="btn-resend" id="resendBtn" onclick="sendOTP(true)">
+            <i class="fas fa-rotate-right"></i> Resend OTP
+          </button>
+        </div>
+
+        <!-- Verified badge -->
+        <div class="verified-badge" id="verifiedBadge">
+          <i class="fas fa-circle-check"></i> Email Verified Successfully!
+        </div>
+      </div>
+      <!-- ── END OTP SECTION ──────────────────────────────────────────── -->
+
+    </div><!-- /form-grid -->
 
     <div class="terms-check">
       <input type="checkbox" id="terms" required>
       <label for="terms">I agree to the <a href="#">Terms of Use</a> and Privacy Policy <span class="required-star">*</span></label>
     </div>
 
-    <button type="submit" class="btn-submit">
-      Create Account
+    <button type="submit" class="btn-submit" id="registerBtn" disabled>
+      <i class="fas fa-lock lock-icon"></i> Verify Email to Enable Registration
     </button>
 
     <div class="login-link">
@@ -395,46 +410,179 @@
 </div>
 
 <script>
-  function togglePass(id) {
-    const field = document.getElementById(id);
-    const icon = event.target;
-    
-    if (field.type === 'password') {
-      field.type = 'text';
-      icon.classList.remove('fa-eye');
-      icon.classList.add('fa-eye-slash');
-    } else {
-      field.type = 'password';
-      icon.classList.remove('fa-eye-slash');
-      icon.classList.add('fa-eye');
+// ─── CSRF helper ──────────────────────────────────────────────────────────
+function getCookie(name) {
+  let value = null;
+  document.cookie.split(';').forEach(c => {
+    const [k, v] = c.trim().split('=');
+    if (k === name) value = decodeURIComponent(v);
+  });
+  return value;
+}
+const csrfToken = getCookie('csrftoken');
+
+// ─── State ────────────────────────────────────────────────────────────────
+let otpTimerInterval = null;
+let emailVerified    = false;
+
+// ─── Alert helper ─────────────────────────────────────────────────────────
+function showAlert(type, msg) {
+  const el = document.getElementById('otpAlert');
+  const icons = { success:'fa-circle-check', error:'fa-circle-xmark', info:'fa-circle-info' };
+  el.className = `otp-alert ${type} show`;
+  el.innerHTML = `<i class="fas ${icons[type] || 'fa-circle-info'}"></i> ${msg}`;
+}
+
+// ─── OTP Countdown Timer ──────────────────────────────────────────────────
+function startTimer(seconds) {
+  clearInterval(otpTimerInterval);
+  const el = document.getElementById('otpTimer');
+  let remaining = seconds;
+
+  function tick() {
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    el.textContent = `OTP expires in ${m}:${s.toString().padStart(2,'0')}`;
+    el.className   = remaining <= 30 ? 'otp-timer urgent' : 'otp-timer';
+    if (remaining <= 0) {
+      clearInterval(otpTimerInterval);
+      el.textContent = 'OTP expired. Please resend.';
+      el.className   = 'otp-timer urgent';
+      document.getElementById('resendBtn').classList.add('visible');
     }
+    remaining--;
+  }
+  tick();
+  otpTimerInterval = setInterval(tick, 1000);
+}
+
+// ─── Send OTP ─────────────────────────────────────────────────────────────
+async function sendOTP(isResend = false) {
+  const email = document.getElementById('emailField').value.trim();
+  if (!email) { showAlert('error', 'Please enter your email address first.'); return; }
+
+  const btn = document.getElementById('sendOtpBtn');
+  const originalHTML = btn.innerHTML;
+
+  // Show spinner
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Sending…';
+
+  try {
+    const res  = await fetch("{% url 'send_otp' %}", {
+      method: 'POST',
+      headers: { 'X-CSRFToken': csrfToken, 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `email=${encodeURIComponent(email)}`
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      showAlert('success', data.message);
+      document.getElementById('otpVerifyRow').style.display = 'block';
+      document.getElementById('otpInput').value = '';
+      startTimer(300); // 5 minutes
+      document.getElementById('resendBtn').classList.remove('visible');
+      btn.innerHTML = '<i class="fas fa-rotate-right"></i> Resend OTP';
+      btn.disabled  = false;
+    } else {
+      showAlert('error', data.message);
+      btn.innerHTML = originalHTML;
+      btn.disabled  = false;
+    }
+  } catch (err) {
+    showAlert('error', 'Network error. Please try again.');
+    btn.innerHTML = originalHTML;
+    btn.disabled  = false;
+  }
+}
+
+// ─── Verify OTP ───────────────────────────────────────────────────────────
+async function verifyOTP() {
+  const email = document.getElementById('emailField').value.trim();
+  const otp   = document.getElementById('otpInput').value.trim();
+
+  if (!otp || otp.length !== 6) {
+    showAlert('error', 'Please enter the 6-digit OTP.');
+    return;
   }
 
-  // Staggered Entry Animation
-  document.querySelectorAll('.input-wrapper').forEach((el, index) => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(15px)';
-    setTimeout(() => {
-      el.style.transition = 'all 0.4s ease-out';
-      el.style.opacity = '1';
-      el.style.transform = 'translateY(0)';
-    }, 300 + (index * 60));
-  });
+  const btn = document.getElementById('verifyOtpBtn');
+  btn.disabled  = true;
+  btn.innerHTML = '<span class="spinner" style="border-color:rgba(255,255,255,.3);border-top-color:#fff;"></span> Verifying…';
 
-  // Interactive Background Blobs (Mouse Parallax)
-  document.addEventListener('mousemove', (e) => {
-    const blobs = document.querySelectorAll('.blob');
-    const x = e.clientX;
-    const y = e.clientY;
-
-    blobs.forEach((blob, index) => {
-      const speed = (index + 1) * 20;
-      const moveX = (window.innerWidth / 2 - x) / speed;
-      const moveY = (window.innerHeight / 2 - y) / speed;
-      
-      // Use existing animation position but offset it with mouse
-      blob.style.transform = `translate(${moveX}px, ${moveY}px)`;
+  try {
+    const res  = await fetch("{% url 'verify_otp' %}", {
+      method: 'POST',
+      headers: { 'X-CSRFToken': csrfToken, 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`
     });
+    const data = await res.json();
+
+    if (data.success) {
+      emailVerified = true;
+      clearInterval(otpTimerInterval);
+
+      // Hide OTP row, show verified badge
+      document.getElementById('otpVerifyRow').style.display = 'none';
+      document.getElementById('verifiedBadge').classList.add('show');
+      document.getElementById('sendOtpBtn').style.display = 'none';
+      showAlert('success', data.message);
+
+      // Lock email field
+      document.getElementById('emailField').readOnly = true;
+      document.getElementById('emailField').style.opacity = '.6';
+
+      // Enable Register button
+      const regBtn = document.getElementById('registerBtn');
+      regBtn.disabled   = false;
+      regBtn.innerHTML  = '<i class="fas fa-rocket lock-icon"></i> Create Account';
+    } else {
+      showAlert('error', data.message);
+      btn.disabled  = false;
+      btn.innerHTML = '<i class="fas fa-circle-check"></i> Verify OTP';
+    }
+  } catch (err) {
+    showAlert('error', 'Network error. Please try again.');
+    btn.disabled  = false;
+    btn.innerHTML = '<i class="fas fa-circle-check"></i> Verify OTP';
+  }
+}
+
+// ─── Form submit guard ────────────────────────────────────────────────────
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+  if (!emailVerified) {
+    e.preventDefault();
+    showAlert('error', 'Please verify your email before registering.');
+    document.getElementById('otpVerifyRow').scrollIntoView({ behavior:'smooth' });
+  }
+});
+
+// ─── Password visibility toggle ───────────────────────────────────────────
+function togglePass(id, icon) {
+  const f = document.getElementById(id);
+  const isHidden = f.type === 'password';
+  f.type = isHidden ? 'text' : 'password';
+  icon.classList.toggle('fa-eye',      !isHidden);
+  icon.classList.toggle('fa-eye-slash', isHidden);
+}
+
+// ─── Staggered entry animation ────────────────────────────────────────────
+document.querySelectorAll('.input-wrapper, .otp-section').forEach((el, i) => {
+  el.style.opacity   = '0';
+  el.style.transform = 'translateY(15px)';
+  setTimeout(() => {
+    el.style.transition = 'all .4s ease-out';
+    el.style.opacity    = '1';
+    el.style.transform  = 'translateY(0)';
+  }, 250 + i * 55);
+});
+
+// ─── Mouse parallax blobs ─────────────────────────────────────────────────
+document.addEventListener('mousemove', e => {
+  document.querySelectorAll('.blob').forEach((blob, i) => {
+    const speed = (i + 1) * 20;
+    blob.style.transform = `translate(${(window.innerWidth/2 - e.clientX)/speed}px,${(window.innerHeight/2 - e.clientY)/speed}px)`;
   });
+});
 </script>
 {% endblock %}

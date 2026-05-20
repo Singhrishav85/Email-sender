@@ -47,6 +47,51 @@
         transition: width 0.6s ease;
     }
 
+    /* Premium Profile progress capsule overrides */
+    .progress-bar-premium {
+        background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+        position: relative;
+    }
+    
+    .progress-bar-premium::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        animation: shimmyProgress 2s infinite linear;
+    }
+    
+    @keyframes shimmyProgress {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+
+    .progress-details-dropdown {
+        position: absolute;
+        top: 110%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        width: 240px;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        z-index: 1010;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-align: left;
+    }
+    
+    .progress-details-dropdown.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
     /* ── Dynamic action bar ── */
     #selectionActionBar {
         position: absolute;
@@ -182,6 +227,228 @@
             font-size: 0.9rem;
         }
     }
+
+    /* Glassmorphic Analytics summary cards */
+    .analytics-card {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.45) 0%, rgba(15, 23, 42, 0.6) 100%) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 16px !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 20px -2px rgba(0,0,0,0.3);
+    }
+    
+    .analytics-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(99, 102, 241, 0.3) !important;
+        box-shadow: 0 12px 25px -5px rgba(99, 102, 241, 0.15), 0 8px 10px -6px rgba(99, 102, 241, 0.15);
+    }
+
+    .analytics-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.03) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    .analytics-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        transition: transform 0.3s ease;
+    }
+    
+    .analytics-card:hover .analytics-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+    
+    .text-cyan {
+        color: #06b6d4 !important;
+    }
+    
+    .filter-pill {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        color: #94a3b8;
+        font-size: 0.8rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    
+    .filter-pill:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.25);
+    }
+    
+    .filter-pill.active {
+        background: #0d6efd !important;
+        border-color: #0d6efd !important;
+        color: #fff !important;
+        box-shadow: 0 0 12px rgba(13, 110, 253, 0.5);
+    }
+
+    /* Premium Glassmorphic Toast Notifications */
+    .toast-container {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 380px;
+        width: calc(100% - 48px);
+    }
+    
+    .premium-toast {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 16px !important;
+        padding: 16px !important;
+        color: #fff !important;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        box-shadow: 0 20px 40px -5px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05) inset;
+        position: relative;
+        overflow: hidden;
+        animation: toastSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        transition: all 0.3s ease;
+    }
+    
+    @keyframes toastSlideIn {
+        from {
+            transform: translateX(120%) scale(0.9);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes toastSlideOut {
+        from {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(120%) scale(0.9);
+            opacity: 0;
+        }
+    }
+    
+    .premium-toast.toast-dismiss {
+        animation: toastSlideOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    }
+    
+    .toast-icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        flex-shrink: 0;
+    }
+    
+    .toast-success-icon {
+        background: rgba(76, 206, 173, 0.15);
+        color: #4ccead;
+        box-shadow: 0 0 10px rgba(76, 206, 173, 0.2);
+    }
+    
+    .toast-error-icon {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+    }
+    
+    .toast-info-icon {
+        background: rgba(59, 130, 246, 0.15);
+        color: #3b82f6;
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+    }
+    
+    .toast-content-wrapper {
+        flex-grow: 1;
+        padding-top: 2px;
+    }
+    
+    .toast-title {
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-bottom: 3px;
+        letter-spacing: 0.02em;
+    }
+    
+    .toast-message {
+        color: #94a3b8;
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+    
+    .toast-close-btn {
+        background: none;
+        border: none;
+        color: #64748b;
+        padding: 0;
+        cursor: pointer;
+        transition: color 0.2s;
+        font-size: 0.9rem;
+        margin-top: 2px;
+    }
+    
+    .toast-close-btn:hover {
+        color: #fff;
+    }
+    
+    /* Toast progress bar */
+    .toast-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        width: 100%;
+        transform-origin: left;
+        animation: toastProgressAnimation 4.5s linear forwards;
+    }
+    
+    @keyframes toastProgressAnimation {
+        from {
+            transform: scaleX(1);
+        }
+        to {
+            transform: scaleX(0);
+        }
+    }
+    
+    .toast-progress-success {
+        background: linear-gradient(90deg, #4ccead, #00f2fe);
+    }
+    
+    .toast-progress-error {
+        background: linear-gradient(90deg, #ef4444, #f43f5e);
+    }
+    
+    .toast-progress-info {
+        background: linear-gradient(90deg, #3b82f6, #06b6d4);
+    }
+
+
 </style>
 
 <div class="container-fluid p-3 border-bottom border-secondary d-flex flex-column flex-md-row justify-content-between align-items-center">
@@ -190,16 +457,36 @@
   <!-- Profile Section -->
   <div class="profile-section d-flex flex-wrap align-items-center justify-content-center">
 
-      <!-- 🟢 Profile Completion Section -->
-      <div class="profile-progress me-5 text-center">
-          <small class="text-white fw-bold">Profile Completion</small>
-          <div class="progress" style="width:100px; height:8px; border-radius:10px; overflow:hidden;">
-              <div class="progress-bar bg-success" role="progressbar" 
-                   style="width: {{ profile_completion|default:'70' }}%;" 
-                   aria-valuenow="{{ profile_completion|default:'70' }}" 
-                   aria-valuemin="0" aria-valuemax="100"></div>
+      <!-- 🟢 Premium Profile Completion Capsule -->
+      <div class="profile-progress me-4 text-start position-relative d-flex align-items-center gap-2 px-3 py-2" 
+           style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; cursor: pointer; position: relative;"
+           id="profileCompletionWrapper"
+           onclick="toggleProgressTooltip(event)">
+           
+          <div class="d-flex flex-column" style="min-width: 95px;">
+              <span class="text-white small fw-bold text-uppercase" style="font-size: 0.62rem; letter-spacing: 0.05em; display: block; margin-bottom: 2px;">Profile Completion</span>
+              <div class="d-flex align-items-center gap-2">
+                  <div class="progress" style="width: 70px; height: 6px; background-color: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin: 0;">
+                      <div class="progress-bar-premium" role="progressbar" 
+                           style="width: {{ profile_completion|default:'75' }}%; height: 100%; border-radius: 10px;" 
+                           aria-valuenow="{{ profile_completion|default:'75' }}" 
+                           aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <span class="fw-bold text-white" style="font-size: 0.78rem; text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);">{{ profile_completion|default:'75' }}%</span>
+              </div>
           </div>
-          <small class="text-success fw-semibold">{{ profile_completion|default:'70' }}%</small>
+          <i class="fa-solid fa-circle-chevron-down text-secondary ms-1 small" id="completionChevron" style="font-size: 0.72rem;"></i>
+
+          <!-- Interactive Floating Help Checklist Dropdown -->
+          <div class="progress-details-dropdown" id="progressDetailsDropdown">
+              <h6 class="dropdown-title mb-2 text-white small fw-bold" style="font-size: 0.8rem;"><i class="fa-solid fa-bars-progress me-2 text-warning"></i>Setup Checklist</h6>
+              <ul class="list-unstyled mb-0" style="font-size: 0.72rem; line-height: 1.6;">
+                  <li class="text-success mb-1"><i class="fa-solid fa-circle-check me-2"></i>User Profile Setup</li>
+                  <li class="text-success mb-1"><i class="fa-solid fa-circle-check me-2"></i>SMTP Credentials</li>
+                  <li class="text-warning mb-1"><i class="fa-solid fa-circle-half-stroke me-2"></i>DKIM Records setup</li>
+                  <li class="text-muted"><i class="fa-regular fa-circle me-2"></i>Bulk SPF Verified</li>
+              </ul>
+          </div>
       </div>
 
       <!-- Profile Icon -->
@@ -207,6 +494,7 @@
           <span>{{ user.first_name|first|upper }}</span>
       </a>
 
+      <a href="{% url 'dash' %}" class="btn btn-outline-info ms-0 ms-md-3 mb-2 mb-md-0"><i class="fa-solid fa-house me-1"></i>Main Page</a>
       <a href="{% url 'configure' %}" class="btn btn-secondary ms-0 ms-md-3 mb-2 mb-md-0">Templates</a>
       <a href="{% url 'logout' %}" class="btn btn-outline-danger ms-0 ms-md-3 mb-2 mb-md-0">Logout</a>
   </div>
@@ -214,22 +502,68 @@
 <br>
 
 {% if messages %}
-    {% for message in messages %}
-        <div class="alert alert1 alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="background-color: {{ message.color|default:'' }};">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endfor %}
+    <div class="toast-container">
+        {% for message in messages %}
+            <div class="premium-toast alert-{{ message.tags }}" role="alert">
+                <div class="toast-icon-wrapper {% if message.tags == 'success' %}toast-success-icon{% elif message.tags == 'error' or message.tags == 'danger' %}toast-error-icon{% else %}toast-info-icon{% endif %}">
+                    {% if message.tags == 'success' %}
+                        <i class="fa-solid fa-circle-check fs-5"></i>
+                    {% elif message.tags == 'error' or message.tags == 'danger' %}
+                        <i class="fa-solid fa-circle-exclamation fs-5"></i>
+                    {% else %}
+                        <i class="fa-solid fa-circle-info fs-5"></i>
+                    {% endif %}
+                </div>
+                <div class="toast-content-wrapper">
+                    <div class="toast-title">
+                        {% if message.tags == 'success' %}
+                            Success
+                        {% elif message.tags == 'error' or message.tags == 'danger' %}
+                            Error Occurred
+                        {% else %}
+                            Notification
+                        {% endif %}
+                    </div>
+                    <div class="toast-message">{{ message }}</div>
+                </div>
+                <button type="button" class="toast-close-btn" onclick="dismissToast(this.parentElement)" aria-label="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="toast-progress {% if message.tags == 'success' %}toast-progress-success{% elif message.tags == 'error' or message.tags == 'danger' %}toast-progress-error{% else %}toast-progress-info{% endif %}"></div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function dismissToast(toastEl) {
+            toastEl.classList.add('toast-dismiss');
+            setTimeout(() => {
+                toastEl.remove();
+            }, 300);
+        }
+        
+        // Auto dismiss after 4 seconds
+        document.querySelectorAll('.premium-toast').forEach(toast => {
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    dismissToast(toast);
+                }
+            }, 4000);
+        });
+    </script>
 {% endif %}
 
 <div class="container mt-4">
-  <h2 class="h5 mb-3">Recipients</h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h5 mb-0"><i class="fa-solid fa-address-book me-2" style="color: #0b5ed7;"></i>Workspace Contacts</h2>
+  </div>
 
+  <!-- Search and Actions -->
   <div class="position-relative mb-3">
     <div class="d-flex flex-column flex-md-row search-bar">
-      <input type="text" class="form-control me-0 me-md-2 mb-2 mb-md-0 rounded-pill" placeholder="Search by name, Category, Comments, Emails">
-      <button class="btn btn-primary rounded-pill">
-        <i class="fa fa-search"></i>
+      <input type="text" id="recipientSearch" class="form-control me-0 me-md-2 mb-2 mb-md-0 rounded-pill" placeholder="Type here to search instantly by Name, Email, Category, or Comments...">
+      <button class="btn btn-primary rounded-pill px-4">
+        <i class="fa fa-search me-1"></i> Search
       </button>
     </div>
 
@@ -265,6 +599,17 @@
     <a href="{% url 'uploadfile' %}" class="btn btn-primary me-1">
       <i class="fa fa-file-upload"></i> Upload CSV
     </a>
+
+    <!-- Category Dropdown Filter Selection next to Upload CSV -->
+    <div class="d-flex align-items-center ms-0 ms-md-2">
+      <select id="categorySelect" class="form-select bg-dark text-white border-secondary rounded-pill px-3" style="width: auto; min-width: 170px; height: 38px; font-size: 0.85rem; cursor: pointer;">
+        <option value="all">All Contacts</option>
+        <option value="clients">Clients</option>
+        <option value="business">Business</option>
+        <option value="personal">Personal</option>
+        <option value="promotional">Promotional</option>
+      </select>
+    </div>
   </div>
 
   <!-- Hidden form for bulk delete (shares selected_ids via JS) -->
@@ -337,6 +682,7 @@
 
 </div>
 
+
 <div class="features-section">
     <h2>Key Features</h2>
     <div class="features-grid">
@@ -395,7 +741,8 @@
 
   // ── Select / deselect all ────────────────────────────────────────────
   selectAllChk.addEventListener('change', function () {
-    rowChecks.forEach(function (chk) {
+    const visibleChecks = document.querySelectorAll('tbody tr:not([style*="display: none"]) .row-check');
+    visibleChecks.forEach(function (chk) {
       chk.checked = selectAllChk.checked;
     });
     syncActionBar();
@@ -404,12 +751,119 @@
   // ── Individual row checkbox ──────────────────────────────────────────
   rowChecks.forEach(function (chk) {
     chk.addEventListener('change', function () {
-      // Keep selectAll in sync
-      selectAllChk.checked =
-        document.querySelectorAll('.row-check:checked').length === rowChecks.length;
+      const visibleChecks = document.querySelectorAll('tbody tr:not([style*="display: none"]) .row-check');
+      const checkedVisible = document.querySelectorAll('tbody tr:not([style*="display: none"]) .row-check:checked');
+      selectAllChk.checked = visibleChecks.length > 0 && visibleChecks.length === checkedVisible.length;
       syncActionBar();
     });
   });
+
+  // ── Search & Dropdown Category Filters ────────────────────────────────
+  const searchInput    = document.getElementById('recipientSearch');
+  const categorySelect = document.getElementById('categorySelect');
+  const tableRows      = document.querySelectorAll('tbody tr:not(.no-results-row)');
+  const tbody          = document.querySelector('tbody');
+  
+  // Create No Results row element
+  const noResultsRow = document.createElement('tr');
+  noResultsRow.className = 'no-results-row';
+  noResultsRow.style.display = 'none';
+  noResultsRow.innerHTML = `
+    <td colspan="7" class="text-center text-secondary py-5">
+      <i class="fa-solid fa-magnifying-glass fa-2x mb-3 d-block text-muted"></i>
+      <h6 class="text-light fw-bold">No matching recipients found</h6>
+      <p class="text-muted small mb-0">Try checking your spelling or adjusting your category filter.</p>
+    </td>
+  `;
+  tbody.appendChild(noResultsRow);
+
+  // Scan unique categories from table rows and dynamically populate selection dropdown
+  if (categorySelect) {
+    const existingOptions = Array.from(categorySelect.options).map(opt => opt.value.toLowerCase());
+    const categories = new Set();
+    
+    tableRows.forEach(row => {
+      if (row.cells && row.cells.length > 4) {
+        const catVal = row.cells[4].textContent.trim();
+        if (catVal) categories.add(catVal);
+      }
+    });
+
+    categories.forEach(cat => {
+      const catLower = cat.toLowerCase();
+      if (!existingOptions.includes(catLower)) {
+        const opt = document.createElement('option');
+        opt.value = catLower;
+        opt.textContent = cat;
+        categorySelect.appendChild(opt);
+      }
+    });
+  }
+
+  // Active filter state
+  let currentCategory = 'all';
+
+  // Master Filter Function
+  function applyFilters() {
+    const query = searchInput.value.toLowerCase().trim();
+    let visibleCount = 0;
+
+    tableRows.forEach(row => {
+      if (!row.cells || row.cells.length < 6) return;
+      
+      const name     = row.cells[2] ? row.cells[2].textContent.toLowerCase() : '';
+      const email    = row.cells[3] ? row.cells[3].textContent.toLowerCase() : '';
+      const category = row.cells[4] ? row.cells[4].textContent.toLowerCase() : '';
+      const comments = row.cells[5] ? row.cells[5].textContent.toLowerCase() : '';
+
+      const matchesSearch = !query || 
+                            name.includes(query) || 
+                            email.includes(query) || 
+                            category.includes(query) || 
+                            comments.includes(query);
+
+      const matchesCategory = currentCategory === 'all' || 
+                              category.trim() === currentCategory.toLowerCase();
+
+      if (matchesSearch && matchesCategory) {
+        row.style.display = '';
+        visibleCount++;
+      } else {
+        row.style.display = 'none';
+        // Uncheck if hidden so hidden items aren't accidentally sent
+        const chk = row.querySelector('.row-check');
+        if (chk && chk.checked) {
+          chk.checked = false;
+        }
+      }
+    });
+
+    // Toggle no results row
+    if (visibleCount === 0 && tableRows.length > 0) {
+      noResultsRow.style.display = '';
+    } else {
+      noResultsRow.style.display = 'none';
+    }
+
+    // Sync select-all checkbox and action bar based on current visibility
+    const visibleChecks = document.querySelectorAll('tbody tr:not([style*="display: none"]) .row-check');
+    const checkedVisible = document.querySelectorAll('tbody tr:not([style*="display: none"]) .row-check:checked');
+    selectAllChk.checked = visibleChecks.length > 0 && visibleChecks.length === checkedVisible.length;
+
+    syncActionBar();
+  }
+
+  // Event Listeners
+  if (searchInput) {
+    searchInput.addEventListener('input', applyFilters);
+  }
+
+  if (categorySelect) {
+    categorySelect.addEventListener('change', function () {
+      currentCategory = this.value;
+      applyFilters();
+    });
+  }
 
   // ── Delete Selected: copy checked IDs into hidden delete form ────────
   btnDelete.addEventListener('click', function () {
@@ -431,6 +885,35 @@
     });
 
     deleteForm.submit();
+  });
+
+
+
+  // ── Profile Completion Details Dropdown Toggle ─────────────────────────
+  const completionWrapper = document.getElementById('profileCompletionWrapper');
+  const detailsDropdown  = document.getElementById('progressDetailsDropdown');
+  const chevronIcon      = document.getElementById('completionChevron');
+
+  window.toggleProgressTooltip = function(event) {
+    if (event) event.stopPropagation();
+    if (detailsDropdown) {
+      detailsDropdown.classList.toggle('visible');
+    }
+    if (chevronIcon) {
+      chevronIcon.classList.toggle('fa-circle-chevron-up');
+      chevronIcon.classList.toggle('fa-circle-chevron-down');
+    }
+  };
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(event) {
+    if (detailsDropdown && completionWrapper && !completionWrapper.contains(event.target)) {
+      detailsDropdown.classList.remove('visible');
+      if (chevronIcon) {
+        chevronIcon.classList.add('fa-circle-chevron-down');
+        chevronIcon.classList.remove('fa-circle-chevron-up');
+      }
+    }
   });
 
 })();

@@ -4,110 +4,258 @@
 {% block title %}Configure Mail Templates{% endblock %}
 
 {% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #0d1117 !important;
+        color: #c9d1d9 !important;
+    }
 
-        <a class="navbar-brand fs-3" >📧 Mail Templates</a>
+    /* Premium Navbar Styling */
+    .custom-navbar {
+        background-color: #161b22 !important;
+        border-bottom: 1px solid #30363d;
+        padding: 15px 0;
+    }
+    
+    .navbar-brand {
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        color: #ffffff !important;
+    }
+    
+    .welcome-text {
+        font-size: 1.1rem;
+        color: #8b949e;
+        margin: 0;
+        font-weight: 500;
+    }
 
-        <h2>Welcome, {{username}}</h2>
+    /* Card & Table Wrapper styling */
+    .templates-card {
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        margin-top: 30px;
+    }
+
+    /* Table styling */
+    .table-dark-custom {
+        background-color: #161b22 !important;
+        color: #c9d1d9 !important;
+        margin-bottom: 0;
+    }
+    
+    .table-dark-custom th {
+        background-color: #0d1117 !important;
+        color: #8b949e !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        padding: 14px 18px !important;
+        border-bottom: 1px solid #30363d !important;
+    }
+    
+    .table-dark-custom td {
+        padding: 14px 18px !important;
+        border-bottom: 1px solid #21262d !important;
+        font-size: 0.88rem;
+    }
+
+    .table-dark-custom tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.02) !important;
+    }
+
+    /* Modern Styled Badges */
+    .badge-primary-t {
+        background-color: rgba(46, 160, 67, 0.15) !important;
+        border: 1px solid rgba(46, 160, 67, 0.4);
+        color: #3fb950 !important;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+        display: inline-block;
+    }
+
+    .badge-secondary-t {
+        background-color: rgba(210, 153, 34, 0.15) !important;
+        border: 1px solid rgba(210, 153, 34, 0.4);
+        color: #d29922 !important;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+        display: inline-block;
+    }
+
+    /* Button Custom styling */
+    .btn-custom-action {
+        font-weight: 600;
+        font-size: 0.8rem;
+        padding: 6px 12px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+    }
+
+    .btn-info-t {
+        background-color: #1f6feb;
+        border: 1px solid #388bfd;
+        color: #ffffff;
+    }
+    
+    .btn-info-t:hover {
+        background-color: #388bfd;
+        color: #ffffff;
+    }
+
+    .btn-warning-t {
+        background-color: #d29922;
+        border: 1px solid #e3b341;
+        color: #0d1117;
+    }
+    
+    .btn-warning-t:hover {
+        background-color: #e3b341;
+        color: #0d1117;
+    }
+
+    .btn-danger-t {
+        background-color: #da3633;
+        border: 1px solid #f85149;
+        color: #ffffff;
+    }
+    
+    .btn-danger-t:hover {
+        background-color: #f85149;
+        color: #ffffff;
+    }
+
+    .btn-primary-t {
+        background-color: #238636;
+        border: 1px solid #2ea043;
+        color: #ffffff;
+        font-weight: 600;
+        padding: 8px 18px;
+        border-radius: 8px;
+        text-decoration: none;
+    }
+    
+    .btn-primary-t:hover {
+        background-color: #2ea043;
+        color: #ffffff;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+    <div class="container">
+        <a class="navbar-brand fs-4" ><i class="fa-solid fa-envelope-open-text me-2 text-warning"></i>📧 Mail Templates</a>
+
+        <h2 class="welcome-text">Welcome, {{username}}</h2>
         
         <div class="d-flex align-items-center">
-            <a href=" {% url 'home' %}" class="btn btn-warning me-2">
+            <a href="{% url 'home' %}" class="btn btn-outline-warning btn-custom-action me-2">
                 <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
             </a>
-            <a href="{% url 'logout' %}" class="btn btn-danger me-2">
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-custom-action me-2">
                 <i class="fa-solid fa-right-from-bracket"></i> Logout
             </a>
-            <a class="btn btn-light rounded-5 me-2" href="{% url 'profile' %}">
-                <i class="fa-solid fa-user fa-xl" style="color: #050505ff;"></i>
+            <a class="btn btn-outline-light btn-custom-action rounded-circle" href="{% url 'profile' %}" style="width: 36px; height: 36px; padding: 0; display: inline-flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-user" style="font-size: 0.95rem;"></i>
             </a>
         </div>
     </div>
 </nav>
 
-    {% if messages %}
+{% if messages %}
+    <div class="container mt-3">
         {% for message in messages %}
-            <div class="alert alert1 alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="background-color: {{ message.color|default:'' }};">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show border-0 text-white" role="alert" style="background-color: #1f6feb; border-radius: 8px;">
+                <i class="fa-solid fa-circle-info me-2"></i>{{ message }}
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}
-    {% endif %}
+    </div>
+{% endif %}
 
-
-<div class="container mt-5">
+<div class="container mt-4">
 
     <!-- Heading + Create New -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="fw-bold"></h2>
-        <a href=" {% url 'createtemplate' %} " class="btn btn-primary">➕ Create New Template</a>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="fw-bold fs-4 text-white">Configured Templates</h2>
+        <a href="{% url 'createtemplate' %}" class="btn-primary-t"><i class="fa-solid fa-plus me-2"></i>Create New Template</a>
     </div>
-
 
     <!-- Templates Table -->
-    <div class="table-responsive shadow rounded">
-        <table class="table table-dark table-striped table-hover align-middle">
-            <thead>
-                <tr>
-                    <th>Sr No</th>
-                    <th>Template Name</th>
-                    <th>Subject</th>
-                    <th>Status</th>
-                    <th>Created On</th>
-                    <th>Updated On</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
+    <div class="templates-card">
+        <div class="table-responsive">
+            <table class="table table-dark-custom align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Sr No</th>
+                        <th>Template Name</th>
+                        <th>Subject Line</th>
+                        <th>Status</th>
+                        <th>Created On</th>
+                        <th>Updated On</th>
+                        <th class="text-end" style="width: 260px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                <tr>
-                    <td>#</td>
-                    <td> {{primary.template_name}} </td>
-                    <td>{{ primary.subject }}</td>
-                <td>
-                    <button class="btn btn-success rounded-pill" disabled>Primary</button>
-                </td>
-                    <td>{{ primary.created_at }}</td>
-                    <td>{{ primary.updated_at }}</td>
-                <td>
-        <a href="{% url 'viewstatus' primary.id %}" class="btn btn-sm btn-info">👁 View</a>
-        <a href="{% url 'editprofile' primary.id %}" class="btn btn-sm btn-warning">✏ Edit</a>
+                    <tr>
+                        <td class="text-secondary fw-semibold">#</td>
+                        <td class="fw-bold text-white">{{ primary.template_name }}</td>
+                        <td class="text-secondary">{{ primary.subject }}</td>
+                        <td>
+                            <span class="badge-primary-t">Primary</span>
+                        </td>
+                        <td class="text-secondary small">{{ primary.created_at }}</td>
+                        <td class="text-secondary small">{{ primary.updated_at }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'viewstatus' primary.id %}" class="btn-custom-action btn-info-t">👁 View</a>
+                            <a href="{% url 'editprofile' primary.id %}" class="btn-custom-action btn-warning-t">✏ Edit</a>
+                            <button class="btn-custom-action btn-outline-secondary" disabled style="opacity: 0.5;">Default</button>
+                        </td>
+                    </tr>
 
-            <button class="btn btn-sm btn-secondary" disabled>Default</button>
-    </td>
-</tr>
-
-
-
-                {% for t in others %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ t.template_name }}</td>
-                    <td>{{ t.subject }}</td>
-                <td>
-                    <button class="btn btn-warning rounded-pill" disabled>Secondary</button>
-                </td>
-                    <td>{{ t.created_at }}</td>
-                    <td>{{ t.updated_at }}</td>
-                <td>
-        <a href="{% url 'viewstatus' t.id %}" class="btn btn-sm btn-info">👁 View</a>
-        <a href="{% url 'editprofile' t.id %}" class="btn btn-sm btn-warning">✏ Edit</a>
-            <a href="{% url 'deletetemplate' t.id %}" class="btn btn-sm btn-danger">🗑 Delete</a>
-    </td>
-</tr>
-
+                    {% for t in others %}
+                    <tr>
+                        <td class="text-secondary fw-semibold">{{ forloop.counter }}</td>
+                        <td class="fw-semibold text-white">{{ t.template_name }}</td>
+                        <td class="text-secondary">{{ t.subject }}</td>
+                        <td>
+                            <span class="badge-secondary-t">Secondary</span>
+                        </td>
+                        <td class="text-secondary small">{{ t.created_at }}</td>
+                        <td class="text-secondary small">{{ t.updated_at }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'viewstatus' t.id %}" class="btn-custom-action btn-info-t">👁 View</a>
+                            <a href="{% url 'editprofile' t.id %}" class="btn-custom-action btn-warning-t">✏ Edit</a>
+                            <a href="{% url 'deletetemplate' t.id %}" class="btn-custom-action btn-danger-t" onclick="return confirm('Are you sure you want to delete this template?');">🗑 Delete</a>
+                        </td>
+                    </tr>
                     {% endfor %}
 
-               
-
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-<script>window.addEventListener('DOMContentLoaded', (event) => {
-    setTimeout(() => {
-        let alerts = document.querySelectorAll('.alert');
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        setTimeout(() => {
+            let alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
                 alert.style.display = 'none';
             });

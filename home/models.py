@@ -1,4 +1,6 @@
 from django.db import models
+import hashlib
+from django.utils import timezone
 
 
 class User(models.Model):
@@ -44,3 +46,61 @@ class help(models.Model):
 
     def __str__(self):
         return self.name
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OTP Verification Model
+# ─────────────────────────────────────────────────────────────────────────────
+class OTPVerification(models.Model):
+    """
+    Stores a hashed OTP for email verification during registration.
+
+    Security design:
+      - OTP is NEVER stored as plain text; only its SHA-256 digest is persisted.
+      - expires_at = created_at + 5 minutes (enforced in the view).
+      - otp_count tracks how many OTPs were requested today (rate limiting).
+      - Records are deleted after successful registration or can be cleaned up
+        by a periodic management command.
+    """
+    email        = models.EmailField(max_length=254)
+    otp_hash     = models.CharField(max_length=64)      # SHA-256 hex digest (64 chars)
+    created_at   = models.DateTimeField(auto_now_add=True)
+    expires_at   = models.DateTimeField()               # set to now + 5 min on save
+    is_verified  = models.BooleanField(default=False)
+    otp_count    = models.IntegerField(default=1)       # OTPs sent today for this email
+    last_sent_at = models.DateTimeField(auto_now=True)  # updated on every resend
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'OTP Verification'
+        verbose_name_plural = 'OTP Verifications'
+
+    def __str__(self):
+        return f"{self.email} – verified={self.is_verified}"
+
+    # ── Helper: hash a raw OTP string ────────────────────────────────────────
+    @staticmethod
+    def hash_otp(otp: str) -> str:
+        """Return the SHA-256 hex digest of a raw OTP string."""
+        return hashlib.sha256(otp.encode('utf-8')).hexdigest()
+
+    # ── Expiry check ─────────────────────────────────────────────────────────
+    def is_expired(self) -> bool:
+        """Returns True if the OTP window (5 min) has elapsed."""
+        return timezone.now() > self.expires_at
+
+    # ── Constant-time comparison ──────────────────────────────────────────────
+    def verify(self, raw_otp: str) -> bool:
+        """
+        Validates a raw OTP against the stored hash.
+        Returns True only when:
+          1. The OTP has NOT expired.
+          2. The SHA-256 hash of raw_otp matches otp_hash.
+        """
+        if self.is_expired():
+            return False
+        import hmac  # hmac.compare_digest prevents timing attacks
+        return hmac.compare_digest(
+            self.otp_hash,
+            OTPVerification.hash_otp(raw_otp)
+        )

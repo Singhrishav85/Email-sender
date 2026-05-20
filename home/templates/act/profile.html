@@ -4,29 +4,154 @@
 {% block title %}User Profile{% endblock %}
 
 {% block content %}
+<style>
+  .profile-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.55) 0%, rgba(15, 23, 42, 0.75) 100%) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      box-shadow: 0 15px 35px -5px rgba(0,0,0,0.5);
+      border-radius: 20px !important;
+  }
+  
+  .avatar-wrapper {
+      position: relative;
+      display: inline-block;
+      padding: 4px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #4ccead, #6366f1, #06b6d4);
+      box-shadow: 0 0 25px rgba(76, 206, 173, 0.35);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .avatar-wrapper:hover {
+      transform: scale(1.05) rotate(4deg);
+      box-shadow: 0 0 35px rgba(99, 102, 241, 0.55);
+  }
+
+  .avatar-img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #0f172a;
+  }
+  
+  .detail-card {
+      background: rgba(30, 41, 59, 0.4) !important;
+      border: 1px solid rgba(255, 255, 255, 0.05) !important;
+      border-radius: 14px !important;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .detail-card:hover {
+      background: rgba(30, 41, 59, 0.6) !important;
+      border-color: rgba(99, 102, 241, 0.25) !important;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px -6px rgba(99, 102, 241, 0.2);
+  }
+  
+  .text-gradient {
+      background: linear-gradient(45deg, #4ccead, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+  }
+  
+  .btn-profile-option {
+      transition: all 0.25s ease;
+      border-radius: 12px !important;
+      font-weight: 500;
+  }
+  
+  .btn-profile-option:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+  }
+
+  /* ☀️ Light Theme Styles override */
+  body {
+      transition: background-color 0.4s ease, color 0.4s ease;
+  }
+  
+  body.light-theme {
+      background-color: #f1f5f9 !important;
+      color: #0f172a !important;
+  }
+  
+  body.light-theme .profile-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.95) 100%) !important;
+      border: 1px solid rgba(0, 0, 0, 0.08) !important;
+      box-shadow: 0 15px 35px -5px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.05);
+      color: #0f172a !important;
+  }
+  
+  body.light-theme .border-secondary {
+      border-color: rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  body.light-theme .detail-card {
+      background: rgba(241, 245, 249, 0.85) !important;
+      border: 1px solid rgba(0, 0, 0, 0.06) !important;
+      color: #1e293b !important;
+  }
+  
+  body.light-theme .detail-card:hover {
+      background: #ffffff !important;
+      border-color: rgba(99, 102, 241, 0.3) !important;
+      box-shadow: 0 8px 20px -6px rgba(99, 102, 241, 0.15);
+  }
+  
+  body.light-theme .detail-card p.text-white {
+      color: #0f172a !important;
+  }
+  
+  body.light-theme .text-secondary {
+      color: #64748b !important;
+  }
+  
+  body.light-theme .text-muted {
+      color: #475569 !important;
+  }
+
+  body.light-theme .avatar-img {
+      border: 4px solid #ffffff;
+  }
+</style>
+
 <div class="container my-5">
   <div class="row justify-content-center">
     <div class="col-lg-10">
-      <div class="card shadow-lg p-3" style="border-radius: 15px; backdrop-filter: blur(8px); background: rgba(17,24,39,0.85); color: #fff;">
+      <div class="card profile-card p-3 text-white">
         <div class="row g-0">
           
           <!-- LEFT COLUMN -->
-          <div class="col-md-4 text-center border-end d-flex flex-column align-items-center justify-content-center py-4">
-            {% if user.profile_image %}
-              <img src="{{ user.profile_image.url }}" class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #4ccead;">
-            {% else %}
-              <img src="{% static 'images/default-avatar.png' %}" class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #4ccead;">
-            {% endif %}
+          <div class="col-md-4 text-center border-end border-secondary d-flex flex-column align-items-center justify-content-center py-4 px-3">
+            <div class="avatar-wrapper mb-3">
+              {% if user.profile_image %}
+                <img src="{{ user.profile_image.url }}" class="avatar-img">
+              {% else %}
+                <img src="{% static 'images/default-avatar.png' %}" class="avatar-img">
+              {% endif %}
+            </div>
             
-            <h3 class="text-success">{{ user.first_name }} {{ user.last_name }}</h3>
-            <p class="text-light small">{{ user.email }}</p>
+            <h3 class="text-gradient mt-2">{{ user.first_name }} {{ user.last_name }}</h3>
+            <p class="text-secondary small mb-3">{{ user.email }}</p>
 
-            <a href="{% url 'home' %}" class="btn btn-info mt-3 w-75 rounded-pill">Back to Dashboard</a>
+            <!-- Navigation Buttons in Left Column -->
+            <div class="d-flex flex-column gap-2 mt-2 w-100 align-items-center px-2">
+              <a href="{% url 'home' %}" class="btn btn-outline-info btn-profile-option w-100 rounded-pill">
+                <i class="fa-solid fa-chart-line me-2"></i>Dashboard Home
+              </a>
+              <a href="{% url 'configure' %}" class="btn btn-warning btn-profile-option text-dark w-100 rounded-pill">
+                <i class="fa-solid fa-envelope-open-text me-2"></i>Email Templates
+              </a>
+            </div>
 
-            <!-- 🟢 Profile Completion Section -->
-            <div class="profile-section d-flex flex-column align-items-center justify-content-center mt-4">
-              <small class="text-white fw-bold">Profile Completion</small>
-              <div class="progress mt-2" style="width: 120px; height: 8px; border-radius: 10px; overflow: hidden;">
+            <!-- Profile Completion Section -->
+            <div class="d-flex flex-column align-items-center justify-content-center mt-4 w-100">
+              <small class="text-secondary fw-semibold">Profile Completion</small>
+              <div class="progress mt-2 w-75" style="height: 8px; border-radius: 10px; overflow: hidden; background-color: rgba(255,255,255,0.1);">
                 <div class="progress-bar bg-success" 
                      role="progressbar" 
                      style="width: {{ profile_completion|default:'70' }}%;" 
@@ -34,75 +159,142 @@
                      aria-valuemin="0" 
                      aria-valuemax="100"></div>
               </div>
-              <small class="text-success fw-semibold mt-1">{{ profile_completion|default:'70' }}%</small>
+              <small class="text-success fw-bold mt-1" style="font-size: 0.85rem;">{{ profile_completion|default:'70' }}% Completed</small>
+            </div>
+
+            <!-- Theme Toggle Switch -->
+            <div class="d-flex align-items-center justify-content-between mt-4 pt-3 border-top border-secondary w-100 px-3" id="themeToggleWrapper">
+              <small class="text-secondary fw-semibold"><i class="fa-solid fa-circle-half-stroke me-1"></i>Theme Mode</small>
+              <div class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" role="switch" id="themeModeToggle" checked style="cursor: pointer; width: 40px; height: 20px;">
+                <label class="form-check-label ms-2 text-success fw-bold" id="themeModeLabel" for="themeModeToggle">Dark</label>
+              </div>
             </div>
           </div>
 
           <!-- RIGHT COLUMN -->
           <div class="col-md-8 p-4">
-            <h4 class="mb-3 text-success">Profile Details</h4>
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <div class="card bg-dark text-light h-100">
-                  <div class="card-body">
-                    <h6 class="card-title text-success">First Name</h6>
-                    <p class="card-text">{{ user.first_name|default:"Not Provided" }}</p>
+            <h4 class="mb-4 text-gradient"><i class="fa-solid fa-address-card me-2"></i>Profile Details</h4>
+            
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="card detail-card text-light h-100">
+                  <div class="card-body py-3">
+                    <h6 class="text-muted small fw-bold text-uppercase mb-1">First Name</h6>
+                    <p class="card-text fs-5 fw-semibold mb-0 text-white">{{ user.first_name|default:"Not Provided" }}</p>
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 mb-3">
-                <div class="card bg-dark text-light h-100">
-                  <div class="card-body">
-                    <h6 class="card-title text-success">Last Name</h6>
-                    <p class="card-text">{{ user.last_name|default:"Not Provided" }}</p>
+              
+              <div class="col-md-6">
+                <div class="card detail-card text-light h-100">
+                  <div class="card-body py-3">
+                    <h6 class="text-muted small fw-bold text-uppercase mb-1">Last Name</h6>
+                    <p class="card-text fs-5 fw-semibold mb-0 text-white">{{ user.last_name|default:"Not Provided" }}</p>
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 mb-3">
-                <div class="card bg-dark text-light h-100">
-                  <div class="card-body">
-                    <h6 class="card-title text-success">Date of Birth</h6>
-                    <p class="card-text">{{ user.date_of_birth|date:"F d, Y"|default:"Not Provided" }}</p>
+              
+              <div class="col-md-6">
+                <div class="card detail-card text-light h-100">
+                  <div class="card-body py-3">
+                    <h6 class="text-muted small fw-bold text-uppercase mb-1">Date of Birth</h6>
+                    <p class="card-text fs-5 fw-semibold mb-0 text-white">{{ user.date_of_birth|date:"F d, Y"|default:"Not Provided" }}</p>
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 mb-3">
-                <div class="card bg-dark text-light h-100">
-                  <div class="card-body">
-                    <h6 class="card-title text-success">Phone Number</h6>
-                    <p class="card-text">{{ user.phone|default:"Not Provided" }}</p>
+              
+              <div class="col-md-6">
+                <div class="card detail-card text-light h-100">
+                  <div class="card-body py-3">
+                    <h6 class="text-muted small fw-bold text-uppercase mb-1">Phone Number</h6>
+                    <p class="card-text fs-5 fw-semibold mb-0 text-white">{{ user.phone|default:"Not Provided" }}</p>
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 mb-3">
-                <div class="card bg-dark text-light h-100">
-                  <div class="card-body">
-                    <h6 class="card-title text-success">Organization</h6>
-                    <p class="card-text">{{ user.organization|default:"Not Provided" }}</p>
+              
+              <div class="col-md-6">
+                <div class="card detail-card text-light h-100">
+                  <div class="card-body py-3">
+                    <h6 class="text-muted small fw-bold text-uppercase mb-1">Organization</h6>
+                    <p class="card-text fs-5 fw-semibold mb-0 text-white">{{ user.organization|default:"Not Provided" }}</p>
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 mb-3">
-                <div class="card bg-dark text-light h-100">
-                  <div class="card-body">
-                    <h6 class="card-title text-success">Email Host Password</h6>
-                    <p class="card-text">{% if user.email_pass %}********{% else %}Not Set{% endif %}</p>
+              
+              <div class="col-md-6">
+                <div class="card detail-card text-light h-100">
+                  <div class="card-body py-3">
+                    <h6 class="text-muted small fw-bold text-uppercase mb-1">Email Host Password</h6>
+                    <p class="card-text fs-5 fw-semibold mb-0 text-success">{% if user.email_pass %}•••••••• (Configured){% else %}Not Set{% endif %}</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Options -->
-            <div class="d-flex flex-wrap gap-2 mt-3">
-              <a href="{% url 'edit_profile' %}" class="btn btn-success flex-grow-1">Edit Profile</a>
-              <a href="{% url 'change_password' %}" class="btn btn-success flex-grow-1">Change Password</a>
-              <a href="{% url 'help' %}" class="btn btn-success flex-grow-1">Customer Support</a>
-              <a href="{% url 'login' %}" class="btn btn-danger flex-grow-1">Logout</a>
+            <!-- Options Action Grid -->
+            <div class="d-flex flex-wrap gap-2 mt-4 pt-3 border-top border-secondary">
+              <a href="{% url 'edit_profile' %}" class="btn btn-success btn-profile-option flex-grow-1">
+                <i class="fa-solid fa-user-pen me-2"></i>Edit Profile
+              </a>
+              <a href="{% url 'configure' %}" class="btn btn-warning btn-profile-option text-dark flex-grow-1">
+                <i class="fa-solid fa-envelope-open-text me-2"></i>Templates
+              </a>
+              <a href="{% url 'change_password' %}" class="btn btn-success btn-profile-option flex-grow-1">
+                <i class="fa-solid fa-key me-2"></i>Password
+              </a>
+              <a href="{% url 'help' %}" class="btn btn-success btn-profile-option flex-grow-1">
+                <i class="fa-solid fa-circle-question me-2"></i>Help
+              </a>
+              <a href="{% url 'logout' %}" class="btn btn-danger btn-profile-option flex-grow-1">
+                <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+              </a>
             </div>
           </div>
 
         </div>
       </div>
+    <script>
+      (function() {
+        const themeToggle = document.getElementById('themeModeToggle');
+        const themeLabel = document.getElementById('themeModeLabel');
+        const body = document.body;
+
+        // Check localStorage for saved theme preference
+        const savedTheme = localStorage.getItem('profile-theme');
+        
+        // Default is dark (checked = true)
+        if (savedTheme === 'light') {
+          themeToggle.checked = false;
+          body.classList.add('light-theme');
+          themeLabel.textContent = 'Light';
+          themeLabel.classList.remove('text-success');
+          themeLabel.classList.add('text-primary');
+        } else {
+          themeToggle.checked = true;
+          body.classList.remove('light-theme');
+          themeLabel.textContent = 'Dark';
+          themeLabel.classList.add('text-success');
+          themeLabel.classList.remove('text-primary');
+        }
+
+        themeToggle.addEventListener('change', function() {
+          if (this.checked) {
+            body.classList.remove('light-theme');
+            themeLabel.textContent = 'Dark';
+            themeLabel.classList.add('text-success');
+            themeLabel.classList.remove('text-primary');
+            localStorage.setItem('profile-theme', 'dark');
+          } else {
+            body.classList.add('light-theme');
+            themeLabel.textContent = 'Light';
+            themeLabel.classList.remove('text-success');
+            themeLabel.classList.add('text-primary');
+            localStorage.setItem('profile-theme', 'light');
+          }
+        });
+      })();
+    </script>
     </div>
   </div>
 </div>
